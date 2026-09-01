@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Autodiagnóstico de Competencias de Transformación</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Old+Standard+TT:ital@0;1&display=swap" rel="stylesheet" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<style>
+  body { margin: 0; font-family: 'Oswald', sans-serif; background: #fff; }
+  .serif { font-family: 'Old Standard TT', serif; }
+  .vertical-label { writing-mode: vertical-rl; transform: rotate(180deg); }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script>
+// ============================================================
+// CONFIGURACIÓN — pegar aquí la URL de la aplicación web de Apps Script
+// ============================================================
+const CONFIG = {
+  API_URL: "https://script.google.com/macros/s/AKfycbzJ32Txv5-60I6Ly6pnDBVO6gBpSOptcjxYwSVPV3JDicfdqeffgaJEke8fvopytsOo/exec",
+  SHEET_URL: "https://docs.google.com/spreadsheets/d/1U6XnK-KK0gZBBgxJp8iFDsoT8nUbr01xkuepLS-5l4E/edit",
+  VERSION: "3.0",
+};
+</script>
+
+<script>
+// ============================================================
+// DATOS DEL INSTRUMENTO (generados desde la fuente única de verdad)
+// ============================================================
+const ESCALA = [{"valor": 4, "etiqueta": "SIEMPRE / CASI SIEMPRE"}, {"valor": 3, "etiqueta": "CON MUCHA FRECUENCIA"}, {"valor": 2, "etiqueta": "EN ALGUNAS OCASIONES"}, {"valor": 1, "etiqueta": "NUNCA / CASI NUNCA"}];
+const DIMENSIONES = [{"id": "estrategia", "nombre": "ESTRATEGIA", "bg": "#A2A2A2", "fg": "#FFFFFF", "ghost": "rgba(255,255,255,0.28)", "competencias": [{"id": "c01", "num": "01", "titulo": "DIAGNÓSTICO Y DECISIÓN", "descripcion": "La competencia Diagnóstico & Decisión consiste en la capacidad 1) de “leer” situaciones complejas, donde hay abundancia de información, dimensiones y actores, 2) de identificar los factores críticos y 3) de tomar decisiones prácticas que agilicen obtener los resultados deseados.\n\nEn contextos de transformación, esta competencia resulta clave para identificar rápido los retos estratégicos de la organización, enfocando en ellos sus recursos (humanos, materiales y financieros) y determinando el curso de acción más adecuado en cada momento.\n\nUn desarrollo limitado en esta competencia puede llevar a una persona a direccionar los recursos de su organización por un camino erróneo o a gestionarlos de un modo ineficiente.", "preguntas": ["Cuando analizo un asunto, me hago preguntas desafiantes que cuestionan incluso mis conclusiones iniciales.", "Me atrevo a plantear soluciones disruptivas aunque a algunos les parezcan excesivamente radicales.", "Tiendo a inclinarme por soluciones que me han funcionado bien en el pasado.", "Cuestiono el “statu quo” del entorno aunque, a primera vista, no sea el foco del problema.", "En un proceso de análisis, paso por una fase de divergencia (abrir muchas y diversas opciones) antes de entrar en una de convergencia (priorizar las más adecuadas).", "Soy capaz de discernir rápidamente los aspectos clave de una realidad compleja frente a lo secundario.", "Soy capaz de explicar a otros realidades complejas de forma breve y clara.", "Al enfrentarme a un problema, me cuesta pasar de los modelos teóricos a la aplicación práctica.", "Al abordar un asunto, identifico rápidamente las cifras clave, dimensiono su magnitud y preveo su impacto.", "Me invitan a participar en discusiones de otras áreas de la organización debido a la habilidad que he desarrollado para el pensamiento estratégico.", "Consigo contribuir con perspectiva en discusiones sobre desafíos transversales de la organización, gracias a mi amplia experiencia en distintas áreas.", "Mis intervenciones en reuniones estratégicas pueden desviar la conversación a aspectos demasiado tácticos.", "Destaco por mi capacidad para integrar perspectivas diversas, logrando que la discusión avance con fluidez.", "Tomo decisiones rápidamente, sin debatirlas con otros, aunque su punto de vista podría agregar valor.", "Cuando me “enamoro” de una solución, me resulta difícil aceptar las propuestas alternativas de otras personas.", "Pregunto para entender con profundidad otros puntos de vista, sin prejuzgarlos ni rechazarlos rápidamente.", "Genero un entorno abierto y colaborativo en el que todos se sienten cómodos dando su opinión.", "Tomo decisiones estratégicas que pueden tener un impacto significativo, asumiendo el riesgo de equivocarme.", "Me tomo demasiado tiempo para llegar a una conclusión, pudiendo caer en la “parálisis por análisis”.", "En momentos de presión, evito precipitarme en mis conclusiones, estudiando la información disponible antes de decidir.", "Retraso decisiones que, por falta de acción, se acaban convirtiendo en decisiones."]}, {"id": "c02", "num": "02", "titulo": "DISEÑO DE PROYECTOS", "descripcion": "La competencia Diseño de Proyectos consiste en la capacidad de aterrizar retos estratégicos en proyectos con objetivos concretos que logren, en un periodo acotado de tiempo, resultados tangibles y medibles.\n\nEn contextos de transformación, esta competencia es crítica para aterrizar rápido los proyectos estratégicos de la organización —sin enredarse en largos procesos de aprobación y de lanzamiento que hacen perder time-to-market—, para ilusionar y comprometer al equipo y para asegurar la eficiencia de los recursos asignados (humanos, materiales y financieros).\n\nUn desarrollo limitado en esta competencia reduce drásticamente la velocidad de crucero de la transformación, genera frustración en los equipos y un uso ineficiente de los recursos de la organización, desperdiciando un tiempo precioso para obtener resultados tangibles.", "preguntas": ["Ante un reto estratégico, lo aterrizo rápido en un proyecto concreto, estableciendo objetivos específicos y medibles.", "Identifico fácilmente las actividades clave de un proyecto y gestiono sus interdependencias con las distintas áreas de la organización.", "Mi excesiva dedicación a tareas del día a día retrasa la puesta en marcha de reuniones críticas para discutir y aterrizar proyectos estratégicos.", "Adopto un enfoque demasiado teórico o complejo en la definición del proyecto que dificulta su aterrizaje y puesta en marcha.", "Me dejo llevar por la cautela y planteo objetivos demasiado conservadores en la definición de proyectos.", "Cuando es preciso, aplico metodologías concretas (como Design Thinking, Lean o Agile, por ejemplo) para diseñar proyectos.", "En caso de procesos de aprobación complejos, logro navegar a través de la organización para que el lanzamiento del proyecto no se retrase.", "Identifico rápidamente los perfiles clave que requiere el proyecto y selecciono los candidatos de la organización que mejor se adaptan.", "Consigo transmitir una visión retadora, estratégica e ilusionante del proyecto al equipo asignado, logrando comprometer a todos emocionalmente.", "Ante un equipo con poca experiencia, logro transmitirle de manera sencilla e inspiradora la visión estratégica del proyecto, sin limitarme solo a repartir tareas.", "Me aseguro de que los requerimientos iniciales del proyecto se definan de manera precisa, facilitando el arranque con un norte claro.", "Me aseguro de que asigno a cada persona el rol en el que tiene mayor capacidad de aportación al proyecto.", "Detecto con facilidad oportunidades de optimización en la asignación de recursos al proyecto.", "Identifico y aprovecho sinergias con otras áreas de la organización a la hora de asignar recursos a un proyecto.", "Asigno con previsión el presupuesto adecuado para evitar tener que pedir más recursos a mitad de proyecto."]}, {"id": "c03", "num": "03", "titulo": "EJECUCIÓN ÁGIL", "descripcion": "La competencia de Ejecución Ágil consiste en la capacidad de liderar la ejecución de proyectos empoderando a equipos multidisciplinares a que se enfoquen en logros tempranos e incrementales, a través de un proceso iterativo de aprendizaje y de una planificación dinámica —con un seguimiento disciplinado—; manteniendo al equipo cohesionado incluso en situaciones de crisis.\n\nEn contextos de transformación, esta competencia facilita la consecución de los proyectos en presupuesto y en plazo, asegurando la entrega de valor y desarrollando capacidades en el equipo que transforman el modo de trabajar de la organización.\n\nUn desarrollo limitado en esta competencia frena la velocidad de ejecución de los proyectos estratégicos y la de la propia transformación de la organización.", "preguntas": ["Conozco la filosofía Agile y aplico con criterio y flexibilidad las prácticas que resultan relevantes para el tipo de proyecto que lidero.", "En los proyectos que lidero, mantengo la visión macro y un liderazgo estratégico, sin caer en la microgestión.", "Analizo y convierto bloques de proyecto complejos en tareas granulares que se puedan asignar a equipos pequeños o a personas.", "Planifico con suficiente previsión evitando acabar “apagando fuegos” del corto plazo.", "Utilizo herramientas de planificación y seguimiento (online y offline) para lograr que todo el equipo visualice fácilmente el estado de avance del proyecto.", "Me falta sistemática para organizar la información y los documentos de manera eficiente y que agilice el trabajo en equipo.", "Como parte de la metodología del proyecto, me aseguro de que todos los miembros del equipo reciben feedback sobre su desempeño en el proyecto.", "En la ejecución de proyectos, manejo con versatilidad metodologías como Design Thinking, Lean Startup (producto mínimo viable), A/B testing, SIT, DevOps, entre otras.", "Manejo perfiles de liderazgo adaptados a distintas situaciones (momentos de crisis, fases creativas, etcétera).", "Reconozco cuando un proyecto no está progresando al ritmo adecuado y tengo el valor de romper a tiempo una dinámica incorrecta, aunque genere situaciones de conflicto.", "Cuando tengo algo muy claro, termino haciendo las cosas a mi manera, sin consultar a otros miembros del equipo.", "Abro espacios periódicamente con el equipo para generar ideas sobre cómo mejorar la ejecución del proyecto.", "Me preocupo de que mi equipo se sienta cómodo aportando sugerencias de mejora en todo momento, incluso cuando puedan parecer contrarias al sentir general.", "Consigo gestionar las expectativas de los diferentes stakeholders a lo largo de la vida del proyecto, incluso cuando son contrapuestas entre ellas.", "Me adelanto a los problemas, identificando riesgos y aplicando medidas preventivas, antes de que me exploten en la cara.", "En proyectos complejos o de gran tamaño, consigo orquestar a múltiples personas, actividades y recursos sin penalizar ni el plazo ni el presupuesto.", "Gestiono situaciones de crisis con calma y serenidad.", "Actúo de manera asertiva para atajar situaciones de potencial conflicto antes de que se salgan de control.", "Tiendo a retrasar decisiones que pueden afectar emocionalmente al equipo, en vez de afrontar el potencial conflicto con determinación.", "Lidero con fluidez a personalidades diversas, incluso opuestas a la mía.", "Identifico correctamente cuándo pedir más al equipo y cuándo no.", "Me aseguro de que nadie en el equipo se sienta “aparcado”, incluso cuando no está aportando, dándole feedback y ayudándole a replantear su rol y a cambiar su actitud en el proyecto.", "Doy suficiente contexto sobre el proyecto a las personas que sólo participan en algunas de sus actividades.", "Dedico tiempo de calidad a mantener a todo el equipo informado sobre cómo avanza el proyecto."]}]}, {"id": "liderazgo", "nombre": "LIDERAZGO", "bg": "#EBEBEB", "fg": "#3A3A3A", "ghost": "rgba(0,0,0,0.14)", "competencias": [{"id": "c04", "num": "04", "titulo": "INTEGRIDAD", "descripcion": "La competencia Integridad consiste en vivir de modo consciente y consistente de acuerdo a unos valores concretos y orientados a mejorarse a uno mismo y a contribuir a mejorar a los demás. Dada la fragilidad del ser humano, resulta fácil caer a diario en comportamientos que no están a la altura de los propios valores, por lo que se requiere de una lucha constante para mantener la propia integridad y para restaurarla cuando la hemos dañado.\n\nEn contextos de transformación, esta competencia resulta imprescindible para inspirar a otros a cambiar hábitos, a desarrollar nuevas competencias y a instalar nuevas capacidades en la organización. Pero no desde una perfección improbable, sino desde la fuerza arrolladora de una vida esforzada, consciente de su propia fragilidad. No hay nada más atractivo que una persona que se esfuerza por mejorar.\n\nUn desarrollo limitado en esta competencia limita la capacidad de influir en la transformación de la organización al mero uso de los mecanismos de premio y castigo que te proporciona la estructura jerárquica en la que trabajas.", "preguntas": ["Reflexiono sobre los valores que fundamentan mi vida y trato de incorporarlos a mi comportamiento diario.", "Estudio con profundidad temas sensibles que afectan a la ética y a los valores asegurándome de que mis planteamientos o comportamientos no los dicte la moda o lo políticamente correcto.", "Consigo aplicar mis valores de igual modo en el ámbito personal y en el profesional.", "Me aseguro de que mis comportamientos estén plenamente alineados con mis valores, evitando concederme excepciones que resquebrajen mi integridad.", "En situaciones de conflicto, antepongo el bien común a mis preferencias personales, asegurándome de ponderar el impacto en los demás.", "Actúo de acuerdo con mis valores sin dejarme llevar por la volatilidad de mis estados de ánimo.", "Digo lo que pienso, aunque me pueda causar la desaprobación de otros.", "Hago lo correcto, incluso cuando nadie me ve.", "Muestro mi lealtad a los demás evitando criticarlos por la espalda o que otros lo hagan.", "Mantengo la discreción cuando me cuentan algo en un contexto privado, aunque no me lo pidan explícitamente.", "Me aseguro de aplicar la misma o incluso mayor exigencia a mis comportamientos que a los de los demás.", "Me esfuerzo por entender la perspectiva de personas que no comparten mis opiniones o mis valores, sin romper el diálogo.", "Reconozco mis errores sin tratar de enmascararlos echando la culpa a los demás, aunque ellos también hayan cometido errores.", "Actúo con rapidez para pedir perdón cuando he herido a alguien.", "Consigo perdonar y no guardar ningún rencor a las personas que me han herido.", "Trato a todas las personas de mi entorno profesional con la misma deferencia y respeto, sin dejarme llevar por simpatías y antipatías.", "Mi comportamiento diario en los pequeños detalles es valorado como un buen ejemplo por mis familiares y amigos.", "Contribuyo de un modo práctico a mejorar los hábitos de las personas que me rodean.", "Las personas de mi entorno me piden consejo sobre asuntos delicados porque valoran mi prudencia y mi mesura.", "Tengo mi propósito de vida claramente definido, y mi lucha por alcanzarlo resulta inspiradora para los que me rodean."]}, {"id": "c05", "num": "05", "titulo": "CERCANÍA", "descripcion": "La competencia Cercanía consiste en desarrollar un genuino interés por los demás que permita conocerles, apreciarles, ganarse su confianza y contribuir a desplegar su talento. La cercanía va más allá de la habitual calidez propia de algunas culturas como la latina, caracterizada por ser más sociable, abierta y expresiva que —por ejemplo— la cultura anglosajona. Esta competencia requiere del deseo y del esfuerzo por salir de uno mismo y acercarse a otras personas, desarrollando con ellas un vínculo más fuerte que una mera interacción de carácter técnico y estrictamente profesional.\n\nEn contextos de transformación, se requiere esta competencia para poder desempeñar —con velocidad y con profundidad— una de las responsabilidades clave de un líder: contribuir a desarrollar a cada persona de su equipo.\n\nUn desarrollo limitado en esta competencia lleva a “liderar” como un francotirador, escondido en su despacho y disparando mensajes desde la distancia.", "preguntas": ["Conozco el nombre del cónyuge y de los hijos de las personas con las que trabajo e interactúo habitualmente.", "Estoy pendiente de las fechas señaladas en la vida de mis familiares y amigos, acordándome de contactarles para mostrar mi interés por ellos.", "Cuando una persona me cuenta algo personal que le preocupa puedo olvidarme de preguntarle más adelante cómo va ese asunto.", "Entiendo el perfil de personalidad de cada persona de mi equipo, y lo tengo en cuenta a la hora de interactuar con ellos, para lograr sacar lo mejor de sus cualidades.", "Cuando alguien tiene una reacción negativa, evito juzgarle impulsivamente y trato de hablar con la persona para entender el porqué de su actitud.", "Detecto en el lenguaje no verbal cuando alguien no se encuentra bien y soy capaz de crear el clima de confianza para que se abra y sea posible ayudarle.", "En situaciones de estrés o conflicto, mi manera de expresarme puede ser percibida como brusca o cortante.", "En entornos profesionales me siento cómodo expresando mis emociones cuando la ocasión lo requiere.", "Escucho a los demás “con los ojos”, prestándoles toda mi atención y sin interrumpirles.", "En las conversaciones paso más tiempo hablando que escuchando.", "Me esfuerzo por conectar con personalidades muy diferentes a la mía, consiguiendo superar la falta de química inicial y logrando generar relaciones especiales.", "Muestro en el día a día afecto al comunicarme con mis colegas, tanto a través de la comunicación verbal como de la no verbal.", "Me cuesta entablar conversaciones con personas que conozco poco o me son desconocidas.", "Mantengo activamente la amistad con las personas que conocí en otros equipos o en otras empresas.", "Busco de manera proactiva hacer planes para pasar tiempo de calidad con la familia y los amigos.", "Tiendo a comunicarme con mi equipo con e-mails y mensajes en vez de a través de conversaciones.", "En reuniones y eventos corporativos, paso la mayor parte del tiempo con mi grupo de más allegados, en lugar de conocer mejor a otras personas.", "Dedico tiempo semanal a conversar individualmente sobre temas no profesionales con las personas con las que interactúo habitualmente en el trabajo.", "A mi equipo directo le resulta difícil encontrar el momento para conversar conmigo, debido a que ando demasiado ocupado con la operación del día a día.", "En el día a día, trato de almorzar con las personas de mi equipo para fortalecer mi cercanía con ellos.", "Mantengo conversaciones de desarrollo con cada persona de mi equipo, con independencia de los procesos de evaluación del desempeño establecidos por recursos humanos.", "Me entretengo con el móvil en momentos de familia o de amigos."]}, {"id": "c06", "num": "06", "titulo": "FEEDBACK", "descripcion": "La competencia Feedback consiste en la capacidad de expresar oportunidades de mejora —con delicadeza y a la vez con claridad— o de manifestar reconocimiento por una acción o desempeño a cualquiera de las personas con las que colaboramos en la organización, con independencia de su posición jerárquica o del área funcional a la que pertenezcan. Esta competencia requiere desarrollar la capacidad de “leer” el comportamiento y los sentimientos de las personas, y también la capacidad de diseñar y de abordar conversaciones inspiradoras que les ayuden a mejorar. No hay herramienta más transformadora que una conversación cara a cara.\n\nEn contextos de transformación, esta competencia es crucial para ayudar a las personas con las que colaboramos a trabajar en su propio crecimiento personal y profesional y a servir mejor a la organización.\n\nUn desarrollo limitado en esta competencia lleva a desentenderse de una de las responsabilidades clave de un líder, el desarrollo de las personas, “subcontratándolo” a Recursos Humanos y limitándose a “cumplir” con las conversaciones determinadas por los procesos de evaluación del desempeño en las organizaciones.", "preguntas": ["Cuando identifico defectos en los demás, tiendo a centrarme tanto en ellos que me cuesta ver y valorar sus cualidades positivas.", "Al dar feedback, mi tono no hiere a la otra persona, sino que la anima a esforzarse por mejorar.", "Cuando doy feedback a personas que considero difíciles, mi tono es más correctivo que inspirador, ya que no tengo excesiva esperanza en que cambien.", "Critico a los demás cuando no están presentes, no con la intención de ayudarles, sino como una forma de desahogarme.", "Soy perfeccionista y me cuesta aceptar la imperfección de los demás.", "Cuando doy feedback, tiendo a generalizar haciendo un uso excesivo de adverbios como “siempre” o “nunca”.", "Digo la verdad y, si no resulta oportuno decirla en ese momento o a esa persona, permanezco en silencio o cambio de tema en vez de decir algo que no es cierto para salir del paso.", "Cuando tengo que dar la opinión sobre alguien, lo hago con la máxima ecuanimidad, sin dejar que mi relación personal con ella afecte a la objetividad de mi juicio.", "Cuando no tengo la respuesta a una cuestión, soy prudente y digo «no lo sé».", "Cuando doy feedback a otros, tengo la expectativa de que cambien de modo inmediato, sin la paciencia para comprender que los cambios profundos suelen requerir tiempo.", "Cuando doy feedback, equilibro bien los comentarios positivos con las oportunidades de mejora.", "Tiendo a evitar las conversaciones incómodas o prefiero gestionarlas a través de mensajes.", "No improviso las conversaciones importantes: las preparo a conciencia, incluso tomando notas, para asegurar que transmito los mensajes adecuados.", "Cuando me hablan, estoy más pendiente de preparar y planificar lo que voy a decir a continuación, en lugar de escuchar atentamente.", "Cuando doy feedback, me baso exclusivamente en cuestiones objetivas y en comportamientos específicos, sin dejarme llevar por sensaciones, opiniones o rumores.", "Cuando converso, escucho con los cinco sentidos y no me distraigo haciendo multi-tasking (e-mails, mensajes, etcétera). Incluso cuando hablo por teléfono y el interlocutor no me ve.", "Cuando tengo que corregir a una persona, le explico con asertividad y con delicadeza el impacto que su comportamiento tiene en los demás.", "Cuando me dan feedback, tiendo a explicar inmediatamente el porqué de mis acciones en vez de escuchar con atención y reflexionar sobre cómo puedo mejorar.", "Me aseguro de no repetir mi feedback de manera insistente a una persona, evitando que se bloquee o se ponga a la defensiva.", "Cuando corrijo a una persona, me aseguro de hacerlo en privado y en un momento que facilite su receptividad.", "Cuando converso, soy consciente del impacto que están teniendo mis mensajes en la otra persona, sabiendo adaptar mi tono y mi enfoque con el fin de ayudarle."]}]}, {"id": "comunicacion", "nombre": "COMUNICACIÓN", "bg": "#EC6A3B", "fg": "#FFFFFF", "ghost": "rgba(255,255,255,0.28)", "competencias": [{"id": "c07", "num": "07", "titulo": "COMUNICACIÓN VERBAL Y NO VERBAL", "descripcion": "La competencia Comunicación Verbal & No Verbal consiste en la capacidad de explicar lo complejo de una manera clara, breve y atractiva. Esta competencia aplica a todo género de reuniones, presentaciones, capacitaciones y conversaciones. La comunicación no verbal también desempeña un papel esencial en la consistencia del mensaje y ayuda a incrementar su impacto.\n\nEn contextos de transformación, esta competencia es determinante para generar rápido claridad en torno a la estrategia y a los proyectos clave de la organización y, a la vez, para comunicarlos de manera inspiradora, suscitando el entusiasmo del equipo con la transformación.\n\nUn desarrollo limitado en esta competencia prolonga innecesariamente las reuniones y empobrece la calidad de las discusiones estratégicas, generando una ineficiencia que ralentiza el proceso de transformación.", "preguntas": ["Cuando tomo la palabra en reuniones, articulo mi mensaje de manera simple y clara.", "Antes de intervenir en una reunión, organizo y estructuro mis ideas, por escrito si es preciso, para asegurar la claridad de mi mensaje.", "Lo que digo no es captado por mis interlocutores con la claridad que me gustaría.", "Mis intervenciones en reuniones son reconocidas por otros por la claridad que aportan a la discusión.", "Soy capaz de simplificar lo complejo de manera que todos lo entiendan.", "Soy capaz de sintetizar fácilmente los puntos clave de una discusión o de un asunto.", "Tiendo a irme por las ramas cuando hablo.", "La riqueza de mi lenguaje me permite expresar mis ideas brevemente y con precisión.", "Cuando expongo, me cuesta concluir, pudiendo “entrar en bucle” o repetir la misma idea más de una vez.", "Cuento historias para dar vida a mis mensajes y transmitirlos con más fuerza.", "Utilizo con versatilidad y destreza diversos estilos de comunicación (explicativo, cautivador, institucional, diplomático, cálido, cercano, divertido, etcétera) dependiendo del contexto.", "Soy persuasivo. Mi modo de hablar emociona, entusiasma y moviliza a mis interlocutores a tomar partido.", "Uso metáforas y frases “rompedoras” que capturan la atención de mis interlocutores y hacen mis ideas recordables.", "Soy capaz de dramatizar o de usar el sentido del humor cuando ayuda a comunicar el mensaje.", "Mi modo de hablar puede resultar poco expresivo.", "Proyecto mi voz con fuerza, utilizando mi caja torácica, sin gritar ni forzar la garganta.", "Hago uso de las pausas y de los silencios para realzar mi mensaje.", "Mi presencia escénica (postura, gestos y mirada) transmite confianza y naturalidad.", "Mis gestos al hablar resultan artificiales o exagerados y distraen del mensaje.", "Conecto visualmente con las personas con las que hablo.", "En interacciones con otras personas, tiendo a sonreír de manera natural y no forzada.", "Tengo tics al hablar (tocarme la cara, dar golpecitos, jugar con objetos, etcétera) que podrían distraer a mis interlocutores.", "Mi expresión facial y corporal evidencian si estoy o no de acuerdo con mi interlocutor, aunque no desee que sea percibido."]}, {"id": "c08", "num": "08", "titulo": "COMUNICACIÓN ESCRITA", "descripcion": "La competencia Comunicación Escrita consiste en la capacidad de explicar lo complejo de una manera clara, breve y atractiva en formatos escritos, respetando además las reglas ortográficas y gramaticales. Esta competencia aplica a todo género de comunicaciones escritas que suceden en una organización: desde redactar un informe que aporte verdadero valor hasta escribir un asunto de email que capture y oriente la atención del receptor.\n\nEn contextos de transformación, esta competencia contribuye a acelerar el proceso de transformación generando claridad y marcando en cada interacción el nivel de excelencia profesional y de atención a los detalles que se espera en la organización.\n\nUn desarrollo limitado en esta competencia genera un “ruido” innecesario en la comunicación, envía al equipo un mensaje de falta de profesionalidad y contribuye a deteriorar la confianza de terceros en los estándares de calidad de la organización.", "preguntas": ["Reviso cuidadosamente mis textos para que no salgan con erratas, faltas de ortografía y errores gramaticales.", "Tiendo a usar de un modo descuidado y sin prestar excesiva atención los signos de puntuación (coma, punto y coma, punto, exclamaciones, interrogaciones, etcétera).", "Al escribir construyo mis mensajes a través de una secuencia de párrafos que responde a una estructura lógica y clara, con el fin de facilitar su comprensión.", "Al escribir, soy capaz de sintetizar mis ideas, comunicando el mensaje con pocas palabras.", "Escribo tal como hablo, usando giros y expresiones coloquiales.", "Presento mis ideas con una estructura ordenada que facilita su comprensión.", "La dificultad para captar el tono de mis mensajes en la comunicación escrita me causa malentendidos con otras personas.", "Uso un vocabulario amplio y con precisión.", "Mi estilo de redacción puede resultar demasiado informal en comunicaciones profesionales.", "Manejo con soltura diversos estilos de texto en función del objetivo del mensaje: descriptivo para informar de hechos, argumentativo para presentar un argumento, o narrativo para relatar una historia, por ejemplo.", "Envío varios mensajes generando notificaciones innecesarias en lugar de estructurar mejor mis ideas en un único mensaje y una sola notificación.", "En las herramientas digitales de la empresa, uso #hashtags y etiquetas que ayudan a clasificar y localizar la información.", "Uso la plataforma adecuada para cada tipo de mensaje, evitando que la información salte de plataforma en plataforma (por ejemplo del e-mail a WhatsApp), facilitando la trazabilidad de la información.", "Uso herramientas de estilo (negrilla, cursiva, subrayado) para facilitar la lectura de mis textos.", "Logro que los títulos de mis mensajes (en e-mails, publicaciones en LinkedIn u otras redes sociales, etcétera) tengan tal claridad y atractivo que inviten a la lectura del texto completo."]}, {"id": "c09", "num": "09", "titulo": "PRESENTACIONES EFECTIVAS", "descripcion": "La competencia Presentaciones Efectivas consiste en la capacidad de explicar lo complejo de una manera clara, breve y atractiva usando cuando sea oportuno herramientas audiovisuales de presentación (PowerPoint, Keynote, Prezi, vídeos, etcétera). Esta competencia requiere la capacidad de construir una narrativa adaptada al tipo de contexto (desde una reunión de equipo hasta una presentación ante un gran auditorio) y al tipo de audiencia.\n\nEn contextos de transformación, esta competencia resulta de gran ayuda para comunicar de manera efectiva a grupos, asegurando que la audiencia abandona la sala con los mensajes interiorizados en su totalidad y de manera homogénea y, a la vez, ilusionados con seguir impulsando la transformación.\n\nUn desarrollo limitado en esta competencia reduce la capacidad de un líder para transmitir su visión de una manera inspiradora y para alinear en torno a ella a su equipo.", "preguntas": ["Mis presentaciones suelen tener demasiado texto o ser visualmente recargadas.", "Suelo llevar más diapositivas de las que me da tiempo a explicar con calma.", "Uso diferentes herramientas para mis presentaciones, dependiendo del contexto y del propósito de la presentación: gráficos, vídeos, fotos, tablas, etcétera.", "Estructuro mis presentaciones antes de diseñarlas, a través de un flujo claro de mensajes (storyboard), de manera que estos lleguen a la audiencia con más claridad.", "Dedico un tiempo excesivo a elaborar mis presentaciones, siendo excesivamente “preciosista”.", "Tras mis presentaciones, pido feedback a alguien con criterio con el fin de seguir mejorándolas.", "Mi excesiva preocupación por la impresión que voy a causar en la audiencia me tensa, haciendo que mi comunicación pierda naturalidad.", "Me apoyo en exceso en mi capacidad de improvisación y no preparo suficientemente mis intervenciones en público.", "Me dejo llevar por mi timidez y no aprovecho todas las oportunidades de hablar en público o de intervenir en reuniones, incluso teniendo algo relevante que decir.", "Soy capaz de hablar en público, comunicando mi mensaje de una manera atractiva, sin necesidad de recurrir al PowerPoint.", "Destaco por mi versatilidad para hablar en público en diversos contextos: dar una conferencia, cerrar una reunión o un workshop con un mensaje inspirador, hacer un brindis en una comida, etcétera.", "Hago mis presentaciones con un estilo propio que resulta atractivo, es recordado por la audiencia y me diferencia de otras personas.", "Tengo tics y uso “muletillas” que distraen de mi mensaje y rebajan la calidad de mi puesta en escena.", "Pierdo el hilo fácilmente cuando me interrumpen.", "Capturo la atención de la audiencia y soy capaz de manejar la dinámica del grupo durante la presentación.", "Al presentar, adapto mi escenificación al tipo de audiencia y sé ajustarla con naturalidad cuando veo que no está funcionando.", "Pierdo el temple con preguntas difíciles o en un debate acalorado.", "Consigo conectar visualmente con la audiencia para “percibir” lo que sienten y adaptar mi tono y estilo.", "Sé encontrar el momento adecuado para cambiar el ritmo, haciendo una pregunta a la audiencia o pidiéndoles que realicen alguna actividad.", "Tengo la asertividad para detener amablemente “conversaciones paralelas” que distraen a la audiencia.", "Cuento historias emocionantes y memorables para ilustrar el contenido que presento.", "Construyo la narrativa de mis presentaciones sincronizando el contenido de las diapositivas con lo que cuento, evitando leerlas como en un karaoke.", "Soy capaz de incorporar el humor o el suspense dentro de mis presentaciones cuando resulta apropiado, sorprendiendo a la audiencia y manteniéndola atenta.", "Puedo llegar a exagerar historias o a «adornarlas» en exceso para que tengan más impacto.", "Soy capaz de conmover a la audiencia por la fuerza y por la autenticidad con la que comunico emociones.", "Me enfoco en servir a la audiencia y no en deslumbrarla o en causarles una buena impresión."]}]}, {"id": "colaboracion", "nombre": "COLABORACIÓN", "bg": "#333333", "fg": "#FFFFFF", "ghost": "rgba(255,255,255,0.22)", "competencias": [{"id": "c10", "num": "10", "titulo": "HERRAMIENTAS DIGITALES", "descripcion": "La competencia Herramientas Digitales consiste en usar las plataformas y herramientas digitales apropiadas para mejorar la eficiencia del trabajo de cada persona y la colaboración con el resto de la organización. Esta competencia requiere de una razonable actualización sobre nuevas herramientas tecnológicas, de liderazgo para crear reglas de uso claras y de disciplina para implementarlas con consistencia a lo largo del tiempo.\n\nEn contextos de transformación, esta competencia resulta imprescindible para gestionar la necesaria complejidad que representa trabajar en responsabilidades funcionales del día a día (running the business) y, a la vez, en proyectos estratégicos de transformación (changing the business).\n\nUn desarrollo limitado en esta competencia lleva al “colapso” digital de las personas —impactando con frecuencia en su vida personal y en su descanso— y a entorpecer el trabajo de la organización.", "preguntas": ["Uso excesivamente el e-mail y WhatsApp sin aprovechar el potencial de nuevas herramientas de comunicación profesional.", "Utilizo de un modo avanzado plataformas de colaboración digital como Teams, Slack, Trello, Workplace, Basecamp o Monday, por ejemplo.", "Consigo cocrear contenido con mi equipo a través de herramientas online (Office 365, Drive, Dropbox o Evernote, entre otras).", "Defino con mi equipo criterios y reglas claras sobre qué herramientas digitales usar para diferentes necesidades de comunicación.", "Cuando necesito transmitir un mensaje especial, sé cómo construir una narrativa adecuada para un mensaje en vídeo y me siento cómodo hablando delante de una cámara.", "Doy feedback a las personas de mi equipo que envían un excesivo número de e-mails para que optimicen sus envíos y los comuniquen por la plataforma adecuada.", "Trabajo en equipo sobre documentos compartidos en la “nube”, en vez de enviar archivos adjuntos por e-mail.", "Creo reglas que automaticen tareas en mi día a día: reglas en el e-mail, personalización de notificaciones, clasificación de notas, seguimiento de tareas pendientes, etcétera.", "Agendo espacios periódicos para revisar e-mails, haciendo una primera lectura para priorizar los que debo responder inmediatamente, y categorizando y marcando para lectura posterior los menos urgentes.", "Utilizo una estructura y una nomenclatura clara y consistente para clasificar y documentar la información, tanto en la “nube” como en mis diferentes dispositivos.", "Hago backup periódico de la información crítica de mis dispositivos.", "Reviso periódicamente y archivo la información antigua cuando ya no es necesaria para mi día a día.", "Tiendo a responder inmediatamente a los mensajes que me llegan, aunque esté reunido o haciendo otra tarea.", "Uso mis dispositivos electrónicos para hacer multitasking en reuniones, en videoconferencias o en llamadas por teléfono.", "Pongo los medios oportunos para asegurarme de que la tecnología no interrumpa mis momentos de familia.", "La comunicación con mi equipo salta de plataforma en plataforma (e-mail, WhatsApp, etcétera), dificultando la trazabilidad de la información.", "Realizo comunicaciones profesionales usando mensajería instantánea fuera del horario de trabajo."]}, {"id": "c11", "num": "11", "titulo": "GESTIÓN DE REUNIONES Y WORKSHOPS", "descripcion": "La competencia Gestión de Reuniones y Workshops consiste en la capacidad de conducir estos foros de un modo ágil y disciplinado, logrando que aporten verdadero valor, mediante un uso eficiente del tiempo, del conocimiento y del talento de todos los participantes. Esta competencia implica asumir el rol de facilitador y utilizar metodologías adecuadas para distintos tipos de reunión o de workshop.\n\nEn contextos de transformación, esta competencia reduce significativamente el tiempo dedicado a reuniones y workshops, y aprovecha el potencial de estos espacios de colaboración e inteligencia colectiva.\n\nUn desarrollo limitado en esta competencia genera ineficiencia en la gestión del tiempo y discusiones de poca calidad.", "preguntas": ["Puedo llegar a convocar a reuniones a personas cuya presencia no sea imprescindible, por mi deseo de mantenerlas informadas.", "Me aseguro de organizar exclusivamente las reuniones realmente necesarias, utilizando otros canales para comunicar información que puede ser consumida individualmente.", "Envío de manera anticipada una agenda a los participantes para estructurar la reunión y gestionar las expectativas.", "Antes de comenzar una reunión que organizo yo, tengo una agenda clara y asigno una cantidad de tiempo realista para cada tema.", "Tengo presente el objetivo de la reunión para elegir el formato adecuado: presencial versus online, de equipo versus de dos personas, etcétera.", "Si necesito que alguien prepare información para una reunión, se la pido con tiempo suficiente para no descuadrar su agenda.", "Manejo distintas metodologías para gestionar diversos tipos de reuniones: de seguimiento de proyectos, de ideación, de integración del equipo, etcétera.", "Las reuniones que yo lidero son puntuales a la hora de comenzar y a la de terminar.", "Designo a alguien que tome notas de la discusión y de los acuerdos, asegurándome de que los comparte con todos los participantes.", "Finalizo las reuniones resumiendo de manera proactiva los acuerdos alcanzados, los próximos pasos, los responsables de cada acción y el mecanismo de seguimiento.", "Uso herramientas para preparar, conducir y organizar diferentes dinámicas de la reunión, tanto digitales (Calendly, Doodle, TapeACall, etcétera), como de facilitación (brain-storming, dinámicas por equipos, post-its, etcétera).", "En las reuniones que no facilito yo realizo multitasking (e-mail, WhatsApp, etcétera).", "Modero las discusiones con una dinámica participativa, pero cumpliendo a la vez con el tiempo asignado en la agenda.", "Puedo mantener la dirección y el ritmo de la reunión, incluso ante personas que tienden a acaparar la discusión o que adoptan posturas demasiado negativas.", "Utilizo de manera consistente dinámicas de facilitación para asegurar la colaboración de todos los participantes en la reunión o workshop.", "Cuando una reunión no está funcionando, soy capaz de modificar la dinámica «en tiempo real» para lograr mejor el objetivo.", "Consigo incorporar de nuevo a la conversación a participantes que se sienten incómodos para dar su punto de vista o que muestran una actitud pasiva.", "En mis reuniones hay un timekeeper que logra que la agenda se maneje con disciplina."]}, {"id": "c12", "num": "12", "titulo": "INFLUENCIA MATRICIAL", "descripcion": "La competencia Influencia Matricial consiste en la capacidad de liderar y colaborar matricialmente en proyectos con personas de distintas áreas funcionales o geográficas, a través de un liderazgo informal basado en la influencia y no en la dependencia jerárquica.\n\nEn contextos de transformación, esta competencia resulta clave para alinear diferentes áreas de la organización en torno a proyectos estratégicos, enriqueciendo la perspectiva en la toma de decisiones y agilizando la consecución de objetivos transversales.\n\nUn desarrollo limitado en esta competencia reduce la capacidad colaborativa de la organización.", "preguntas": ["Ante un objetivo desafiante, consigo persuadir y logro el consenso entre las partes implicadas, en vez de imponer mi posición desde la superioridad jerárquica.", "Cuando interactúo con personas de otras áreas o de otras organizaciones, percibo que me escuchan con atención, que confían en lo que digo y que genero credibilidad.", "Busco y consigo de manera continua modelos de colaboración y partnership con terceros como fórmula para lograr mis objetivos.", "Cuando lanzo nuevas iniciativas, logro encontrar rápido aliados (“early adopters”) que ayuden a difundirlas al resto de la organización.", "Cuando interactúo con personas de otras áreas, soy capaz de “ponerme en sus zapatos” para entender el impacto que estoy teniendo en su trabajo.", "Me cuesta evaluar con ecuanimidad las fortalezas y debilidades de otros, cayendo fácilmente en etiquetarles con modelos simplistas.", "Me aseguro de que conozco con profundidad a las personas con las que colaboro en la organización, evitando etiquetarlas basándome solo en las primeras impresiones.", "Acierto cuando proyecto las posibles reacciones de otras personas en diferentes situaciones.", "Me preocupo por entender en profundidad las prioridades, objetivos y problemas de los líderes y equipos con quienes interactúo, para intentar perseguir juntos el bien común y no sólo mis objetivos.", "Asigno suficiente autoridad a las personas de mi equipo para que tomen sus propias decisiones sin esperar mi aprobación en todo.", "Renuevo y enriquezco mi equipo incorporando talento diverso.", "Doy suficiente visibilidad a las personas de mi equipo en la organización, evitando que mi protagonismo en reuniones clave les eclipse.", "Cuando identifico un talento especial en mi equipo, soy capaz de impulsar su promoción, aunque pueda significar que abandone mi equipo.", "Cuando me refiero a los logros del equipo, utilizo el «nosotros» y no el «yo».", "Hago demasiado trabajo individualmente, sin contar con el equipo, incluso cuando se trata de tareas que se podrían delegar o compartir fácilmente.", "Retraso decisiones difíciles por miedo a herir a otros o a afrontar el conflicto.", "Tiendo a llegar a consensos para el logro de objetivos incluso cuando los puntos de partida están muy alejados.", "En un conflicto de intereses, soy capaz de centrarme en lo que puede funcionar (win-win), en lugar de en quién tiene razón.", "En situaciones que pueden afectar a otras áreas u organizaciones, trato de entender e incorporar una visión de sus necesidades a la hora de tomar decisiones.", "Soy capaz de trabajar con equipos o áreas sobre las que no tengo ascendencia jerárquica y lograr los objetivos.", "Entiendo, valoro y tengo en consideración las posibles diferencias culturales a la hora de trabajar con otras organizaciones.", "Tiendo a comprender el origen y la racionalidad detrás de políticas, prácticas y procedimientos clave en otras áreas y geografías de mi organización.", "Me muevo con fluidez por otras áreas de la organización gracias a la cercanía que he construido con sus personas clave."]}]}];
+const MAPEO = {"c01": [{"s": "PENSAMIENTO DISRUPTIVO", "q": [0, 1, 2, 3], "inv": [2]}, {"s": "CAPACIDAD DE ANÁLISIS ESTRATÉGICO", "q": [4, 5, 7, 8], "inv": [7]}, {"s": "EXPERIENCIA EN REFLEXIÓN ESTRATÉGICA", "q": [6, 9, 10, 11, 12], "inv": [11]}, {"s": "FLEXIBILIDAD ANTE OTROS PUNTOS DE VISTA", "q": [13, 14, 15, 16], "inv": [13, 14]}, {"s": "DECISIÓN BAJO PRESIÓN", "q": [17, 18, 19, 20], "inv": [18, 20]}], "c02": [{"s": "ATERRIZAJE DE RETOS ESTRATÉGICOS", "q": [0, 1, 2, 3, 4, 5], "inv": [2, 3, 4]}, {"s": "ENTREGA DEL PROYECTO AL EQUIPO", "q": [6, 8, 9, 10], "inv": []}, {"s": "ASIGNACIÓN DE RECURSOS AL PROYECTO", "q": [7, 11, 12, 13, 14], "inv": []}], "c03": [{"s": "METODOLOGÍA DE EJECUCIÓN", "q": [0, 1, 2, 3, 4, 5, 7, 15], "inv": [5]}, {"s": "FLEXIBILIDAD Y CAPACIDAD DE ADAPTACIÓN", "q": [8, 9, 10, 14], "inv": [10]}, {"s": "GESTIÓN DEL CONFLICTO", "q": [13, 16, 17, 18], "inv": [18]}, {"s": "COMUNICACIÓN Y LIDERAZGO DE EQUIPOS", "q": [6, 11, 12, 19, 20, 21, 22, 23], "inv": []}], "c04": [{"s": "VALORES CLAROS Y CONSISTENTES", "q": [0, 1, 2], "inv": []}, {"s": "EXIGENCIA PERSONAL", "q": [3, 4, 5, 6, 7, 10], "inv": []}, {"s": "COMPRENSIÓN DE LOS DEMÁS", "q": [8, 9, 11, 12, 13, 14, 15], "inv": []}, {"s": "VIDA INSPIRADORA", "q": [16, 17, 18, 19], "inv": []}], "c05": [{"s": "INTERÉS POR CONOCER A LOS DEMÁS", "q": [0, 1, 2, 3], "inv": [2]}, {"s": "ESTILO DE COMUNICACIÓN EMPÁTICO", "q": [4, 5, 6, 7, 8, 9, 11], "inv": [6, 9]}, {"s": "CAPACIDAD DE CONSTRUIR RELACIONES", "q": [10, 12, 13, 15, 16], "inv": [12, 15, 16]}, {"s": "PRIORIDAD DE LAS PERSONAS SOBRE LAS COSAS", "q": [14, 17, 18, 19, 20, 21], "inv": [18, 21]}], "c06": [{"s": "ACTITUD POSITIVA, CONSTRUCTIVA Y DE ACEPTACIÓN", "q": [0, 1, 2, 3, 4, 9, 10], "inv": [0, 2, 3, 4, 9]}, {"s": "AUTO-CONTROL, PRUDENCIA Y EQUILIBRIO", "q": [5, 6, 7, 8, 14], "inv": [5]}, {"s": "MANTENER CONVERSACIONES DIFÍCILES", "q": [11, 12, 16], "inv": [11]}, {"s": "AUTO-CONCIENCIA Y SENTIDO DE LA OPORTUNIDAD", "q": [13, 15, 17, 18, 19, 20], "inv": [13, 17]}], "c07": [{"s": "CLARIDAD EXPOSITIVA", "q": [0, 1, 2, 3], "inv": [2]}, {"s": "CAPACIDAD DE SÍNTESIS", "q": [4, 5, 6, 7, 8], "inv": [6, 8]}, {"s": "FRESCURA Y FUERZA DEL MENSAJE", "q": [9, 10, 11, 12, 13, 14, 16], "inv": [14]}, {"s": "LENGUAJE NO VERBAL", "q": [15, 17, 18, 19, 20, 21, 22], "inv": [18, 21, 22]}], "c08": [{"s": "CORRECCIÓN ORTOGRÁFICA Y GRAMATICAL", "q": [0, 1, 2], "inv": [1]}, {"s": "ESTILO DEL MENSAJE", "q": [3, 4, 5, 6, 7, 8, 9], "inv": [4, 6, 8]}, {"s": "ESCRITURA EN HERRAMIENTAS DIGITALES", "q": [10, 11, 12, 13, 14], "inv": [10]}], "c09": [{"s": "PREPARACIÓN DE CONTENIDO", "q": [0, 1, 2, 3, 4, 5, 7], "inv": [0, 1, 4, 7]}, {"s": "CAPACIDAD DE HABLAR EN PÚBLICO", "q": [6, 8, 9, 10, 11, 12], "inv": [6, 8, 12]}, {"s": "MANEJO DEL “DIRECTO”", "q": [13, 14, 15, 16, 17, 18, 19], "inv": [13, 16]}, {"s": "CAPACIDAD ORATORIA Y DE STORYTELLING", "q": [20, 21, 22, 23, 24, 25], "inv": [23]}], "c10": [{"s": "USO APROPIADO DE CADA HERRAMIENTA DIGITAL", "q": [0, 1, 2, 3, 4, 5], "inv": [0]}, {"s": "GESTIÓN DE LA INFORMACIÓN EN ENTORNOS DIGITALES", "q": [6, 7, 8, 9, 10, 11], "inv": []}, {"s": "DISCIPLINA EN EL USO", "q": [12, 13, 14, 15, 16], "inv": [12, 13, 15, 16]}], "c11": [{"s": "PREPARACIÓN Y AGENDA", "q": [0, 1, 2, 3, 4, 5], "inv": [0]}, {"s": "MÉTODO Y DISCIPLINA", "q": [6, 7, 8, 9, 10, 11, 17], "inv": [11]}, {"s": "FACILITACIÓN E INCLUSIÓN", "q": [12, 13, 14, 15, 16], "inv": []}], "c12": [{"s": "GENERACIÓN DE CONFIANZA Y CREDIBILIDAD", "q": [1, 2, 3, 19, 22], "inv": []}, {"s": "CAPACIDAD PARA “LEER” A LOS DEMÁS", "q": [4, 5, 6, 7, 8, 20, 21], "inv": [5]}, {"s": "DESARROLLO DE EQUIPO MULTIDISCIPLINAR", "q": [9, 10, 11, 12, 13, 14], "inv": [14]}, {"s": "NEGOCIACIÓN Y GENERACIÓN DE CONSENSO", "q": [0, 15, 16, 17, 18], "inv": [15]}]};
+
+const PREGUNTAS_POR_PAGINA = 4;
+const NARANJA = "#EC6A3B";
+const todasLasCompetencias = DIMENSIONES.flatMap((d) => d.competencias.map((c) => ({ ...c, dim: d })));
+const totalPreguntas = todasLasCompetencias.reduce((a, c) => a + c.preguntas.length, 0);
+const infoPregunta = (cid, idx) => {
+  let out = { subdimension: "", inversa: false };
+  (MAPEO[cid] || []).forEach((sd) => { if (sd.q.indexOf(idx) >= 0) out = { subdimension: sd.s, inversa: sd.inv.indexOf(idx) >= 0 }; });
+  return out;
+};
+const api = async (payload) => {
+  const res = await fetch(CONFIG.API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(payload), redirect: "follow" });
+  if (!res.ok) throw new Error("HTTP " + res.status);
+  return res.json();
+};
+const descargar = (nombre, contenido, mime) => {
+  const blob = new Blob([contenido], { type: mime });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob); a.download = nombre; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+};
+</script>
+
+<script type="text/babel">
+const { useState, useEffect, useRef } = React;
+
+function App() {
+  const [sesion, setSesion] = useState(null);          // { clave, persona }
+  const [respuestas, setRespuestas] = useState({});
+  const [cargando, setCargando] = useState(true);
+  const [vista, setVista] = useState("matriz");        // recos | matriz | intro | form | admin
+  const [activa, setActiva] = useState(null);
+  const [pagina, setPagina] = useState(0);
+  const [claveInput, setClaveInput] = useState("");
+  const [errorClave, setErrorClave] = useState("");
+  const [ingresando, setIngresando] = useState(false);
+  const [sync, setSync] = useState({ pendientes: 0, error: null });
+  const [adminDatos, setAdminDatos] = useState(null);
+  const [importTexto, setImportTexto] = useState("");
+  const [importMsg, setImportMsg] = useState(null);
+  const cola = useRef([]);
+  const enviando = useRef(false);
+
+  // ---- sesión recordada en este navegador ----
+  useEffect(() => {
+    (async () => {
+      try {
+        const guardada = JSON.parse(localStorage.getItem("competencias-sesion") || "null");
+        if (guardada && guardada.clave) {
+          const r = await api({ action: "cargar", clave: guardada.clave });
+          if (r.ok) { setSesion({ clave: guardada.clave, persona: r.persona }); setRespuestas(r.respuestas || {}); }
+          else localStorage.removeItem("competencias-sesion");
+        }
+      } catch (e) { /* sin red o sin sesión */ }
+      setCargando(false);
+    })();
+  }, []);
+
+  const ingresar = async () => {
+    setIngresando(true); setErrorClave("");
+    try {
+      const r = await api({ action: "login", clave: claveInput });
+      if (!r.ok) { setErrorClave(r.error || "Clave no reconocida"); }
+      else {
+        localStorage.setItem("competencias-sesion", JSON.stringify({ clave: claveInput }));
+        setSesion({ clave: claveInput, persona: r.persona });
+        setRespuestas(r.respuestas || {});
+        setClaveInput("");
+        setVista("recos");
+      }
+    } catch (e) { setErrorClave("No se pudo conectar con el servidor. Verifica tu conexión."); }
+    setIngresando(false);
+  };
+  const cerrarSesion = () => {
+    localStorage.removeItem("competencias-sesion");
+    setSesion(null); setRespuestas({}); setActiva(null); setVista("matriz"); setAdminDatos(null);
+  };
+
+  // ---- guardado: UI optimista + cola secuencial con reintento ----
+  const procesarCola = async () => {
+    if (enviando.current || cola.current.length === 0) return;
+    enviando.current = true;
+    while (cola.current.length > 0) {
+      const item = cola.current[0];
+      try {
+        const r = await api({ action: "guardar", clave: sesion.clave, ...item });
+        if (!r.ok) throw new Error(r.error || "Error al guardar");
+        cola.current.shift();
+        setSync({ pendientes: cola.current.length, error: null });
+      } catch (e) {
+        setSync({ pendientes: cola.current.length, error: "Sin conexión: reintentando…" });
+        await new Promise((res) => setTimeout(res, 3000));
+      }
+    }
+    enviando.current = false;
+  };
+  const responder = (cid, idx, valor) => {
+    setRespuestas((prev) => ({ ...prev, [cid]: { ...(prev[cid] || {}), [idx]: valor } }));
+    const info = infoPregunta(cid, idx);
+    cola.current.push({ competencia: cid, pregunta: idx, valor, inversa: info.inversa, subdimension: info.subdimension });
+    setSync((s) => ({ ...s, pendientes: cola.current.length }));
+    procesarCola();
+  };
+
+  // ---- helpers de estado ----
+  const contestadas = (id) => Object.keys(respuestas[id] || {}).length;
+  const totalDe = (id) => todasLasCompetencias.find((c) => c.id === id).preguntas.length;
+  const estadoDe = (id) => { const n = contestadas(id); return n === 0 ? "pendiente" : n >= totalDe(id) ? "completada" : "progreso"; };
+  const siguientePendiente = () => (todasLasCompetencias.find((c) => estadoDe(c.id) === "progreso") || todasLasCompetencias.find((c) => estadoDe(c.id) === "pendiente") || {}).id || null;
+  const abrir = (id, directo) => {
+    const comp = todasLasCompetencias.find((c) => c.id === id);
+    const r = respuestas[id] || {};
+    let idx = comp.preguntas.findIndex((_, i) => r[i] === undefined); if (idx === -1) idx = 0;
+    setPagina(Math.floor(idx / PREGUNTAS_POR_PAGINA)); setActiva(id); setVista(directo ? "form" : "intro");
+  };
+  const contestadasGlobal = todasLasCompetencias.reduce((a, c) => a + contestadas(c.id), 0);
+  const esAdmin = sesion && sesion.persona.rol === "admin";
+
+  // ---- admin ----
+  const cargarAdmin = async () => {
+    setAdminDatos(null);
+    try { const r = await api({ action: "admin_estado", clave: sesion.clave }); if (r.ok) setAdminDatos(r); else setImportMsg({ ok: false, texto: r.error }); }
+    catch (e) { setImportMsg({ ok: false, texto: "No se pudo leer el servidor" }); }
+  };
+  const exportarJSON = async () => {
+    const r = await api({ action: "admin_exportar", clave: sesion.clave });
+    if (r.ok) descargar("competencias-datos-" + new Date().toISOString().slice(0, 10) + ".json", JSON.stringify(r, null, 1), "application/json");
+  };
+  const exportarCSV = () => {
+    if (!adminDatos) return;
+    const filas = ["persona_id;nombre;competencia;titulo;pregunta;valor;valor_ajustado;subdimension"];
+    adminDatos.personas.forEach((p) => {
+      const r = (adminDatos.estado[p.id] || { r: {} }).r;
+      todasLasCompetencias.forEach((c) => {
+        Object.keys(r[c.id] || {}).sort((a, b) => a - b).forEach((i) => {
+          const info = infoPregunta(c.id, Number(i)); const v = Number(r[c.id][i]);
+          filas.push([p.id, p.nombre, c.id, c.titulo, Number(i) + 1, v, info.inversa ? 5 - v : v, info.subdimension].join(";"));
+        });
+      });
+    });
+    descargar("competencias-respuestas.csv", "\ufeff" + filas.join("\n"), "text/csv;charset=utf-8");
+  };
+  const importarJSON = async () => {
+    setImportMsg(null);
+    let obj; try { obj = JSON.parse(importTexto); } catch (e) { setImportMsg({ ok: false, texto: "JSON inválido: " + e.message }); return; }
+    try {
+      const r = await api({ action: "admin_importar", clave: sesion.clave, datos: obj, mapeo: MAPEO });
+      if (r.ok) { setImportMsg({ ok: true, texto: r.detalle.length ? "Importado — " + r.detalle.join(" · ") : "Sin respuestas reconocibles" }); setImportTexto(""); cargarAdmin(); }
+      else setImportMsg({ ok: false, texto: r.error });
+    } catch (e) { setImportMsg({ ok: false, texto: "Error de conexión" }); }
+  };
+
+  const Barra = () => (sync.pendientes > 0 || sync.error) ? (
+    <div className="fixed bottom-3 right-3 text-[11px] uppercase tracking-widest px-3 py-2 text-white z-50" style={{ backgroundColor: sync.error ? "#E74C3C" : "#333" }}>
+      {sync.error ? sync.error : "Guardando… (" + sync.pendientes + ")"}
+    </div>
+  ) : null;
+
+  if (cargando) return <div className="min-h-screen flex items-center justify-center text-gray-400 uppercase tracking-widest">Cargando…</div>;
+
+  // ============================ INGRESO ============================
+  if (!sesion) return (
+    <div className="min-h-screen flex flex-col">
+      <div className="bg-neutral-800 text-white px-6 md:px-16 py-10">
+        <h1 className="uppercase text-2xl md:text-4xl font-semibold leading-tight max-w-2xl">Autodiagnóstico de competencias de transformación</h1>
+        <p className="serif text-sm opacity-80 mt-3 max-w-xl">Ingresa tu clave personal para continuar con tu cuestionario. Tu avance queda guardado y puedes retomarlo en cualquier momento y desde cualquier dispositivo.</p>
+      </div>
+      <div className="flex-1 px-6 md:px-16 py-10 max-w-xl">
+        <label className="uppercase text-xs tracking-widest text-gray-500">Clave de acceso</label>
+        <input type="text" value={claveInput} onChange={(e) => { setClaveInput(e.target.value); setErrorClave(""); }} onKeyDown={(e) => { if (e.key === "Enter") ingresar(); }}
+          placeholder="nombreapellido + año" autoFocus className="serif w-full border-b-2 bg-transparent py-3 mt-2 text-lg outline-none" style={{ borderColor: errorClave ? "#E74C3C" : "#333" }} />
+        {errorClave && <p className="text-xs uppercase tracking-wide mt-2" style={{ color: "#E74C3C" }}>{errorClave}</p>}
+        <p className="serif text-xs text-gray-400 mt-3">Tu clave es tu nombre completo (sin espacios ni tildes) seguido del año en curso. Mayúsculas, espacios y tildes no afectan.</p>
+        <button onClick={ingresar} disabled={ingresando || !claveInput.trim()} className="mt-6 px-12 py-4 uppercase text-sm tracking-widest text-white disabled:opacity-40" style={{ backgroundColor: NARANJA }}>{ingresando ? "Verificando…" : "Ingresar"}</button>
+        <p className="text-[10px] uppercase tracking-widest text-gray-300 mt-10">Versión {CONFIG.VERSION}</p>
+      </div>
+    </div>
+  );
+
+  // ============================ RECOMENDACIONES ============================
+  if (vista === "recos") return (
+    <div className="min-h-screen flex flex-col">
+      <div className="bg-neutral-800 text-white px-6 md:px-16 py-10">
+        <p className="uppercase text-xs tracking-widest opacity-70">{sesion.persona.nombre}</p>
+        <h1 className="uppercase text-2xl md:text-4xl font-semibold leading-tight max-w-3xl mt-2">Estás a punto de empezar… últimas recomendaciones</h1>
+      </div>
+      <div className="flex-1 px-6 md:px-16 py-10 max-w-3xl serif text-base md:text-lg leading-relaxed text-neutral-800">
+        <p className="mb-5">Te recordamos que completar el cuestionario te llevará aproximadamente 45-60 minutos. Busca un lugar tranquilo para poder reflexionar sobre tus comportamientos ante cada pregunta. Es importante que respondas con un sano sentido crítico para que el autodiagnóstico te resulte de máxima utilidad. No se trata de «pasar» un examen sino de identificar oportunidades de mejora.</p>
+        <p>Puedes hacer una pausa en cualquier momento, aunque te recomendamos que lo hagas de una vez o, al menos, que no dejes una competencia a medias. Por último, recuerda que tanto la información que facilites como los resultados son tratados con la máxima confidencialidad y que solo los compartiremos contigo.</p>
+      </div>
+      <div className="bg-gray-100 px-6 md:px-16 py-5 flex justify-end">
+        <button onClick={() => setVista("matriz")} className="px-12 py-4 uppercase text-sm tracking-widest text-white" style={{ backgroundColor: NARANJA }}>Comenzar</button>
+      </div>
+    </div>
+  );
+
+  // ============================ ADMIN ============================
+  if (vista === "admin" && esAdmin) {
+    const filas = adminDatos ? adminDatos.personas.map((p) => {
+      const est = adminDatos.estado[p.id] || { r: {}, t: null };
+      let resp = 0, completas = 0;
+      todasLasCompetencias.forEach((c) => { const k = Object.keys(est.r[c.id] || {}).length; resp += k; if (k >= c.preguntas.length) completas++; });
+      return { p, est, resp, completas };
+    }) : [];
+    return (
+      <div className="min-h-screen pb-12">
+        <Barra />
+        <div className="bg-neutral-800 text-white px-5 md:px-12 py-8">
+          <div className="flex items-start justify-between gap-4 flex-wrap">
+            <button onClick={() => setVista("matriz")} className="text-xs uppercase tracking-widest opacity-70">← Matriz</button>
+            <button onClick={cargarAdmin} className="text-xs uppercase tracking-widest px-4 py-2 border border-white/40">Actualizar</button>
+          </div>
+          <h1 className="uppercase text-2xl md:text-4xl font-semibold mt-4">Panel de administración</h1>
+          <p className="serif text-sm opacity-80 mt-2">{adminDatos ? filas.filter((f) => f.resp > 0).length + " de " + filas.length + " personas con respuestas · datos leídos del Google Sheet" : "Leyendo el servidor…"}</p>
+        </div>
+        <div className="px-5 md:px-12 py-5 flex flex-wrap gap-3">
+          <a href={CONFIG.SHEET_URL} target="_blank" rel="noopener noreferrer" className="px-5 py-3 uppercase text-xs tracking-widest text-white" style={{ backgroundColor: "#27AE60" }}>Abrir Google Sheet</a>
+          <button disabled={!adminDatos} onClick={exportarJSON} className="px-5 py-3 uppercase text-xs tracking-widest text-white disabled:opacity-40" style={{ backgroundColor: NARANJA }}>Exportar JSON</button>
+          <button disabled={!adminDatos} onClick={exportarCSV} className="px-5 py-3 uppercase text-xs tracking-widest bg-neutral-800 text-white disabled:opacity-40">Exportar CSV (largo)</button>
+        </div>
+        <div className="px-5 md:px-12 overflow-x-auto">
+          <table className="w-full text-sm" style={{ minWidth: "640px" }}>
+            <thead><tr className="text-left uppercase text-[10px] tracking-widest text-gray-400 border-b border-gray-200">
+              <th className="py-2 pr-3">Persona</th><th className="py-2 pr-3">Rol</th><th className="py-2 pr-3">Respondidas</th><th className="py-2 pr-3">Competencias</th><th className="py-2">Actualizado</th></tr></thead>
+            <tbody className="serif">
+              {filas.map(({ p, est, resp, completas }) => (
+                <tr key={p.id} className="border-b border-gray-100">
+                  <td className="py-2.5 pr-3" style={{ fontFamily: "Oswald" }}>{p.nombre}</td>
+                  <td className="py-2.5 pr-3 text-xs text-gray-500">{p.rol}</td>
+                  <td className="py-2.5 pr-3">{resp}/{totalPreguntas}</td>
+                  <td className="py-2.5 pr-3">{completas}/12</td>
+                  <td className="py-2.5 text-xs text-gray-500">{est.t ? new Date(est.t).toLocaleString("es-CO") : "—"}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <div className="px-5 md:px-12 mt-8 max-w-3xl">
+          <h2 className="uppercase text-sm tracking-widest text-gray-500 mb-2">Importar datos (JSON)</h2>
+          <p className="serif text-xs text-gray-500 mb-2">Acepta el JSON exportado por esta app o por la versión anterior del cuestionario. Las respuestas se fusionan sin borrar lo existente.</p>
+          <textarea value={importTexto} onChange={(e) => setImportTexto(e.target.value)} rows={6} className="w-full text-xs p-3 border border-gray-300 outline-none" style={{ fontFamily: "monospace" }} placeholder='{"datos":{"nicolas-rozo":{"r":{"c01":{"0":3}}}}}' />
+          <div className="flex items-center gap-3 mt-2 flex-wrap">
+            <button onClick={importarJSON} disabled={!importTexto.trim()} className="px-6 py-3 uppercase text-xs tracking-widest text-white disabled:opacity-40" style={{ backgroundColor: NARANJA }}>Validar e importar</button>
+            {importMsg && <p className="serif text-xs" style={{ color: importMsg.ok ? "#27AE60" : "#E74C3C" }}>{importMsg.texto}</p>}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // ============================ INTRO DE COMPETENCIA ============================
+  if (vista === "intro" && activa) {
+    const comp = todasLasCompetencias.find((c) => c.id === activa);
+    const estado = estadoDe(activa), n = contestadas(activa), total = comp.preguntas.length;
+    return (
+      <div className="min-h-screen flex flex-col"><Barra />
+        <div className="relative overflow-hidden px-5 md:px-12 pt-5 pb-8" style={{ backgroundColor: comp.dim.bg, color: comp.dim.fg }}>
+          <span className="absolute -top-4 right-2 md:right-6 text-8xl md:text-[11rem] font-bold leading-none select-none" style={{ color: comp.dim.ghost }}>{comp.num}</span>
+          <button onClick={() => setVista("matriz")} className="text-xs uppercase tracking-widest opacity-80 relative z-10">← Matriz</button>
+          <p className="uppercase text-xs tracking-widest opacity-70 mt-6 relative z-10">{comp.dim.nombre}</p>
+          <h1 className="uppercase text-3xl md:text-5xl font-medium leading-tight max-w-2xl relative z-10">{comp.titulo}</h1>
+        </div>
+        <div className="flex-1 px-5 md:px-12 py-8 max-w-3xl serif">
+          {(comp.descripcion || "").split("\n\n").map((parr, i) => <p key={i} className="text-neutral-800 text-base md:text-lg leading-relaxed mb-5">{parr}</p>)}
+          <p className="uppercase text-[11px] tracking-widest text-gray-400 mt-6" style={{ fontFamily: "Oswald" }}>{total} preguntas · Escala de frecuencia de comportamiento</p>
+        </div>
+        <div className="bg-gray-100 px-5 md:px-12 py-5 flex justify-end">
+          <button onClick={() => setVista("form")} className="px-12 py-4 uppercase text-sm tracking-widest text-white" style={{ backgroundColor: "#333" }}>{estado === "progreso" ? "Continuar · " + n + "/" + total : estado === "completada" ? "Revisar respuestas" : "Empezar"}</button>
+        </div>
+      </div>
+    );
+  }
+
+  // ============================ FORMULARIO "ACTÚO ASÍ" ============================
+  if (vista === "form" && activa) {
+    const comp = todasLasCompetencias.find((c) => c.id === activa);
+    const resp = respuestas[activa] || {}, total = comp.preguntas.length;
+    const paginas = Math.ceil(total / PREGUNTAS_POR_PAGINA), desde = pagina * PREGUNTAS_POR_PAGINA;
+    const grupo = comp.preguntas.slice(desde, desde + PREGUNTAS_POR_PAGINA);
+    const paginaCompleta = grupo.every((_, i) => resp[desde + i] !== undefined);
+    const esUltima = pagina === paginas - 1;
+    const gridCols = "minmax(0,1fr) repeat(4, minmax(96px, 130px))";
+    return (
+      <div className="min-h-screen flex flex-col"><Barra />
+        <div className="bg-neutral-800 text-white px-4 md:px-8 pt-4 pb-3">
+          <div className="flex items-start justify-between">
+            <button onClick={() => setVista("matriz")} className="text-xs uppercase tracking-widest opacity-70">← Matriz</button>
+            <span className="uppercase text-2xl md:text-3xl font-semibold tracking-wide" style={{ color: "#EDEDED" }}>Actúo así</span>
+          </div>
+          <div className="hidden md:grid items-end mt-2" style={{ gridTemplateColumns: gridCols }}>
+            <div className="flex items-center gap-3 pb-1"><span className="text-5xl font-bold" style={{ color: "rgba(255,255,255,0.35)" }}>{comp.num}</span><span className="uppercase tracking-wide text-base">{comp.num}. {comp.titulo}</span></div>
+            {ESCALA.map((op) => <div key={op.valor} className="text-center uppercase text-[10px] tracking-wider pb-2 px-1 leading-tight">{op.etiqueta}</div>)}
+          </div>
+          <div className="md:hidden flex items-center gap-3 mt-2"><span className="text-4xl font-bold" style={{ color: "rgba(255,255,255,0.35)" }}>{comp.num}</span><span className="uppercase tracking-wide text-sm">{comp.num}. {comp.titulo}</span></div>
+        </div>
+        <div className="flex-1 px-4 md:px-8 py-4">
+          <div className="hidden md:block">
+            {grupo.map((texto, i) => { const q = desde + i; return (
+              <div key={q} className="grid items-stretch" style={{ gridTemplateColumns: gridCols }}>
+                <p className="serif py-5 pr-6 text-[15px] leading-snug text-neutral-800">{texto}</p>
+                {ESCALA.map((op, col) => { const sel = resp[q] === op.valor; return (
+                  <div key={op.valor} className="flex items-center justify-center" style={{ backgroundColor: col % 2 === 0 ? "#F5F5F5" : "transparent" }}>
+                    <button aria-label={op.etiqueta} onClick={() => responder(activa, q, op.valor)} className="w-6 h-6 rounded-full transition-all" style={{ backgroundColor: sel ? NARANJA : "#D6D6D6", transform: sel ? "scale(1.25)" : "scale(1)" }} />
+                  </div>); })}
+              </div>); })}
+          </div>
+          <div className="md:hidden">
+            {grupo.map((texto, i) => { const q = desde + i; return (
+              <div key={q} className="py-4 border-b border-gray-200">
+                <p className="serif text-[15px] leading-snug text-neutral-800 mb-3">{texto}</p>
+                <div className="grid grid-cols-1 gap-1.5">
+                  {ESCALA.map((op) => { const sel = resp[q] === op.valor; return (
+                    <button key={op.valor} onClick={() => responder(activa, q, op.valor)} className="flex items-center gap-3 px-3 py-2 border text-left" style={{ borderColor: sel ? NARANJA : "#DDD", backgroundColor: sel ? "#FDF0EB" : "#FFF" }}>
+                      <span className="w-4 h-4 rounded-full shrink-0" style={{ backgroundColor: sel ? NARANJA : "#D6D6D6" }} /><span className="uppercase text-[11px] tracking-wider text-neutral-700">{op.etiqueta}</span>
+                    </button>); })}
+                </div>
+              </div>); })}
+          </div>
+        </div>
+        <div className="px-4 md:px-8"><div className="h-1 w-full bg-neutral-700"><div className="h-1 transition-all" style={{ width: (contestadas(activa) / total * 100) + "%", backgroundColor: NARANJA }} /></div></div>
+        <div className="bg-gray-100 px-4 md:px-8 py-5 flex items-center justify-between gap-4">
+          <button onClick={() => setPagina((p) => Math.max(0, p - 1))} disabled={pagina === 0} className="uppercase text-xs tracking-widest text-neutral-500 disabled:opacity-0">← Anterior</button>
+          <div className="flex items-center gap-4">
+            {!paginaCompleta && <span className="hidden md:inline text-[11px] uppercase tracking-wide text-gray-400">Responde las {grupo.length} preguntas para continuar</span>}
+            <button onClick={() => (esUltima ? setVista("matriz") : setPagina((p) => p + 1))} disabled={!paginaCompleta} className="px-10 py-4 uppercase text-sm tracking-widest bg-neutral-300 text-neutral-800 disabled:opacity-50">{esUltima ? "Finalizar" : "Siguiente"}</button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // ============================ MATRIZ 3×4 ============================
+  const pendiente = siguientePendiente();
+  return (
+    <div className="min-h-screen pb-8"><Barra />
+      <div className="bg-gray-100 px-4 md:px-12 py-5">
+        <button onClick={() => pendiente && abrir(pendiente, true)} disabled={!pendiente} className="w-full bg-neutral-800 text-white uppercase tracking-widest text-sm py-4 disabled:opacity-60">{pendiente ? "Continuar donde lo dejaste" : "Cuestionario completado"}</button>
+        <p className="text-center text-xs text-gray-400 uppercase tracking-widest mt-2">{sesion.persona.nombre} · {contestadasGlobal}/{totalPreguntas} preguntas · {todasLasCompetencias.filter((c) => estadoDe(c.id) === "completada").length}/12 competencias</p>
+      </div>
+      {DIMENSIONES.map((dim) => (
+        <div key={dim.id} className="flex flex-row px-2 md:px-5 mt-3 md:mt-5 gap-2 md:gap-3">
+          <div className="w-6 md:w-12 flex items-center justify-center shrink-0"><span className="vertical-label uppercase font-semibold tracking-widest text-neutral-800 text-[10px] md:text-lg">{dim.nombre}</span></div>
+          <div className="flex-1 grid grid-cols-3 gap-2 md:gap-3">
+            {dim.competencias.map((comp) => {
+              const estado = estadoDe(comp.id), n = contestadas(comp.id), total = comp.preguntas.length;
+              const etiqueta = estado === "completada" ? "COMPLETADA" : estado === "progreso" ? "CONTINUAR" : "EMPEZAR";
+              return (
+                <button key={comp.id} onClick={() => abrir(comp.id, false)} className="relative text-left p-2.5 md:p-6 min-h-32 md:min-h-72 flex flex-col justify-between overflow-hidden hover:scale-[1.015] transition-transform" style={{ backgroundColor: dim.bg, color: dim.fg }}>
+                  <span className="absolute top-1 right-1.5 md:top-4 md:right-4 text-4xl md:text-9xl font-bold leading-none select-none" style={{ color: dim.ghost }}>{comp.num}</span>
+                  <h2 className="uppercase text-[10px] md:text-2xl font-medium leading-tight pr-5 md:pr-16 relative z-10 mt-5 md:mt-14">{comp.titulo}</h2>
+                  <div className="relative z-10 flex items-end justify-between gap-1.5 md:gap-3 mt-3 md:mt-6">
+                    <div className="flex-1 min-w-0">
+                      <p className="uppercase text-[7px] md:text-[11px] tracking-wide md:tracking-widest mb-1 md:mb-1.5 opacity-90 truncate">{etiqueta}{estado === "progreso" ? " · " + n + "/" + total : ""}</p>
+                      <div className="h-0.5 w-full" style={{ backgroundColor: "rgba(0,0,0,0.25)" }}><div className="h-0.5" style={{ width: (estado === "completada" ? 100 : n / total * 100) + "%", backgroundColor: dim.id === "comunicacion" ? "#FFF" : NARANJA }} /></div>
+                    </div>
+                    <span className="w-5 h-5 md:w-10 md:h-10 rounded-full border flex items-center justify-center text-xs md:text-xl font-light shrink-0" style={{ borderColor: dim.fg, color: dim.fg }}>{estado === "completada" ? "✓" : "+"}</span>
+                  </div>
+                </button>);
+            })}
+          </div>
+        </div>
+      ))}
+      <div className="bg-gray-100 px-4 md:px-12 py-5 mt-6 flex flex-col md:flex-row gap-3">
+        <button onClick={() => pendiente && abrir(pendiente, true)} disabled={!pendiente} className="flex-1 bg-neutral-800 text-white uppercase tracking-widest text-sm py-4 disabled:opacity-60">{pendiente ? "Continuar donde lo dejaste" : "Cuestionario completado"}</button>
+        {esAdmin && <button onClick={() => { setVista("admin"); cargarAdmin(); }} className="md:w-64 bg-neutral-900 text-white uppercase tracking-widest text-sm py-4 border border-neutral-700">Panel admin</button>}
+        <button onClick={cerrarSesion} className="md:w-52 bg-neutral-400 text-white uppercase tracking-widest text-sm py-4">Cerrar sesión</button>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>
