@@ -23,7 +23,7 @@
 const CONFIG = {
   API_URL: "https://script.google.com/macros/s/AKfycbzJ32Txv5-60I6Ly6pnDBVO6gBpSOptcjxYwSVPV3JDicfdqeffgaJEke8fvopytsOo/exec",
   SHEET_URL: "https://docs.google.com/spreadsheets/d/1U6XnK-KK0gZBBgxJp8iFDsoT8nUbr01xkuepLS-5l4E/edit",
-  VERSION: "3.1",
+  VERSION: "3.2",
 };
 </script>
 
@@ -58,10 +58,10 @@ const descargar = (nombre, contenido, mime) => {
 // MOTOR DE RESULTADOS E INFORME (portado del artifact, v2.6)
 // ============================================================
 const NIVELES = [
-  { id: "mal", label: "MAL", color: "#E74C3C", rango: "0 – 5" },
-  { id: "regular", label: "REGULAR", color: "#E8B506", rango: "5 – 7" },
-  { id: "bien", label: "BIEN", color: "#27AE60", rango: "7 – 9" },
-  { id: "excelente", label: "EXCELENTE", color: "#2E86DE", rango: "9 – 10" },
+  { id: "mal", label: "MAL", color: "#E74C3C", rango: "0 – 5", desc: "No tienes la competencia o muestras carencias notables en su desarrollo." },
+  { id: "regular", label: "REGULAR", color: "#E8B506", rango: "5 – 7", desc: "La competencia está activamente en proceso de desarrollo, pero no eres un referente en tu organización por tu nivel de desarrollo." },
+  { id: "bien", label: "BIEN", color: "#27AE60", rango: "7 – 9", desc: "Eres un referente unánime en la organización en esa competencia. Y eres solicitado con frecuencia para ayudar a otros a desarrollarla." },
+  { id: "excelente", label: "EXCELENTE", color: "#2E86DE", rango: "9 – 10", desc: "Muestras un desarrollo de la competencia de clase mundial. La has estudiado y aplicado tanto, que casi podrías escribir libros o dar conferencias sobre ella." },
 ];
 const nivelDe = (s) => (s == null ? null : s < 5 ? "mal" : s < 7 ? "regular" : s < 9 ? "bien" : "excelente");
 const nivelInfo = (id) => NIVELES.find((n) => n.id === id) || {};
@@ -220,6 +220,31 @@ const calcularResultados = (resp) => {
 
 const fmt = (s) => (s == null ? "—" : (Math.round(s * 10) / 10).toString());
 
+const ARBOL_SVG = (() => {
+  let sem = 7;
+  const rnd = () => { sem = (sem * 48271) % 2147483647; return sem / 2147483647; };
+  let dots = "";
+  for (let i = 0; i < 150; i++) {
+    const a = rnd() * 6.283, rr = Math.sqrt(rnd());
+    dots += '<circle cx="' + (175 + Math.cos(a) * rr * 128).toFixed(1) + '" cy="' + (140 + Math.sin(a) * rr * 98).toFixed(1) + '" r="' + (2.2 + rnd() * 2.4).toFixed(1) + '" fill="#DCDCDC"/>';
+  }
+  const nodo = (x, y, num) => '<line x1="' + (x - 46) + '" y1="' + y + '" x2="' + (x - 11) + '" y2="' + y + '" stroke="#C9C9C9" stroke-width="1"/><text x="' + (x - 50) + '" y="' + (y + 4) + '" text-anchor="end" font-family="Oswald,sans-serif" font-size="13" fill="#8A8A8A">' + num + '</text><circle cx="' + x + '" cy="' + y + '" r="8" fill="#EC6A3B" opacity="0.3"/><circle cx="' + x + '" cy="' + y + '" r="4.5" fill="#EC6A3B"/>';
+  return '<svg viewBox="0 0 380 440" xmlns="http://www.w3.org/2000/svg" style="max-width:340px;width:100%">' + dots +
+    '<path d="M175 335 L175 118" stroke="#E9CDBD" stroke-width="5" fill="none"/>' +
+    '<path d="M175 335 L136 378 M175 335 L175 392 M175 335 L216 374 M154 358 L124 392 M198 356 L236 390" stroke="#EFE1D7" stroke-width="3" fill="none"/>' +
+    '<path d="M175 176 L120 176 M175 214 L240 214 M175 128 L236 128 M175 118 L175 86" stroke="#EC6A3B" stroke-width="2.5" fill="none"/>' +
+    nodo(150, 400, "01") + nodo(122, 340, "02") + nodo(146, 288, "03") + nodo(120, 176, "04") + nodo(240, 214, "05") + nodo(236, 128, "06") +
+  '</svg>';
+})();
+const DIMENSIONES_AUTO = [
+  ["06", "METODOLOGÍAS", "Agilidad | Gestión de proyectos…"],
+  ["05", "COMPETENCIAS", "Estrategia | Liderazgo | Colaboración"],
+  ["04", "PRODUCTIVIDAD", "Herramientas digitales | Gestión de reuniones"],
+  ["03", "RELACIONES", "Familia | Amigos | Colegas"],
+  ["02", "EQUILIBRIO DE VIDA · 5D&#8217;S", "Descanso | Deporte | Dieta | Dieta Intelectual | Dimensión Espiritual"],
+  ["01", "PROPÓSITO DE VIDA", "¿Para qué vine?"],
+];
+
 const construirInformeHTML = (nombrePersona, resp) => {
   const res = calcularResultados(resp);
 
@@ -236,7 +261,19 @@ const construirInformeHTML = (nombrePersona, resp) => {
     h += "<div class=hero><div class=wrap><h1 style=\"font-size:28px\">Tu Autodiagnóstico de Competencias de Transformación</h1>";
     if (nombrePersona) h += "<p class=lbl style=\"letter-spacing:2px;color:#ffb08f;margin:6px 0 0\">" + nombrePersona + "</p>";
   h += "<p style=\"max-width:640px\">Resumen de tu grado de desarrollo en las 12 Competencias de Transformación, basado en tus respuestas al cuestionario de autodiagnóstico. Cada competencia obtiene una puntuación de 0 a 10.</p></div></div><div class=wrap>";
-    h += "<p>" + NIVELES.map((n) => "<span class=badge style=\"background:" + n.color + "\">" + n.label + " " + n.rango + "</span>").join(" ") + "</p>";
+    h += "<div style=\"display:flex;flex-wrap:wrap;gap:28px;align-items:center;margin-top:36px;padding:26px;background:#FAFAFA;border:1px solid #eee\">";
+    h += "<div style=\"flex:1 1 300px;min-width:280px\">";
+    h += "<h2 style=\"margin:0 0 6px\">Dimensiones del autodesarrollo</h2>";
+    h += "<p style=\"font-size:14px;color:#555;margin:0 0 18px\">En Emêrgap entendemos el autodesarrollo como un proceso que integra las siguientes dimensiones:</p>";
+    DIMENSIONES_AUTO.forEach((d) => {
+      h += "<p style=\"margin:0 0 12px\"><span class=lbl style=\"color:" + NARANJA + ";font-weight:600;font-size:15px\">" + d[1] + "</span> <sup style=\"font-family:Oswald;color:#999;font-size:10px\">" + d[0] + "</sup><br/><span style=\"font-size:12.5px;color:#777\">" + d[2] + "</span></p>";
+    });
+    h += "</div><div style=\"flex:0 1 340px;text-align:center\">" + ARBOL_SVG + "</div></div>";
+    h += "<div style=\"display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:18px;margin-top:30px\">";
+    NIVELES.forEach((n) => {
+      h += "<div><span class=badge style=\"background:" + n.color + "\">" + n.label + " " + n.rango + "</span><p style=\"font-size:13px;color:#555;margin:8px 0 0;line-height:1.45\">" + n.desc + "</p></div>";
+    });
+    h += "</div>";
     DIMENSIONES.forEach((dim) => {
       h += "<h2 class=dim>" + esc(dim.nombre) + "</h2>";
       dim.competencias.forEach((c) => {
