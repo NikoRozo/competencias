@@ -23,7 +23,7 @@
 const CONFIG = {
   API_URL: "https://script.google.com/macros/s/AKfycbzJ32Txv5-60I6Ly6pnDBVO6gBpSOptcjxYwSVPV3JDicfdqeffgaJEke8fvopytsOo/exec",
   SHEET_URL: "https://docs.google.com/spreadsheets/d/1U6XnK-KK0gZBBgxJp8iFDsoT8nUbr01xkuepLS-5l4E/edit",
-  VERSION: "3.2",
+  VERSION: "3.3",
 };
 </script>
 
@@ -221,19 +221,25 @@ const calcularResultados = (resp) => {
 const fmt = (s) => (s == null ? "—" : (Math.round(s * 10) / 10).toString());
 
 const ARBOL_SVG = (() => {
-  let sem = 7;
+  let sem = 11;
   const rnd = () => { sem = (sem * 48271) % 2147483647; return sem / 2147483647; };
   let dots = "";
-  for (let i = 0; i < 150; i++) {
-    const a = rnd() * 6.283, rr = Math.sqrt(rnd());
-    dots += '<circle cx="' + (175 + Math.cos(a) * rr * 128).toFixed(1) + '" cy="' + (140 + Math.sin(a) * rr * 98).toFixed(1) + '" r="' + (2.2 + rnd() * 2.4).toFixed(1) + '" fill="#DCDCDC"/>';
+  for (let i = 0; i < 235; i++) {
+    const a = rnd() * 6.283, rr = Math.pow(rnd(), 0.62);
+    const x = 185 + Math.cos(a) * rr * 140, y = 165 + Math.sin(a) * rr * 120;
+    const r = 2.5 + rnd() * 8 * (1.05 - rr * 0.5);
+    dots += '<circle cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" r="' + r.toFixed(1) + '" fill="#E7E7E7"/>';
   }
-  const nodo = (x, y, num) => '<line x1="' + (x - 46) + '" y1="' + y + '" x2="' + (x - 11) + '" y2="' + y + '" stroke="#C9C9C9" stroke-width="1"/><text x="' + (x - 50) + '" y="' + (y + 4) + '" text-anchor="end" font-family="Oswald,sans-serif" font-size="13" fill="#8A8A8A">' + num + '</text><circle cx="' + x + '" cy="' + y + '" r="8" fill="#EC6A3B" opacity="0.3"/><circle cx="' + x + '" cy="' + y + '" r="4.5" fill="#EC6A3B"/>';
-  return '<svg viewBox="0 0 380 440" xmlns="http://www.w3.org/2000/svg" style="max-width:340px;width:100%">' + dots +
-    '<path d="M175 335 L175 118" stroke="#E9CDBD" stroke-width="5" fill="none"/>' +
-    '<path d="M175 335 L136 378 M175 335 L175 392 M175 335 L216 374 M154 358 L124 392 M198 356 L236 390" stroke="#EFE1D7" stroke-width="3" fill="none"/>' +
-    '<path d="M175 176 L120 176 M175 214 L240 214 M175 128 L236 128 M175 118 L175 86" stroke="#EC6A3B" stroke-width="2.5" fill="none"/>' +
-    nodo(150, 400, "01") + nodo(122, 340, "02") + nodo(146, 288, "03") + nodo(120, 176, "04") + nodo(240, 214, "05") + nodo(236, 128, "06") +
+  const NA = "#EC6A3B", ND = "#3A3A3A";
+  const nodo = (x, y) => '<circle cx="' + x + '" cy="' + y + '" r="12.5" fill="#F1663C" opacity="0.22"/><circle cx="' + x + '" cy="' + y + '" r="6" fill="#F1663C"/>';
+  const etiq = (tx, ty, num, colLinea, largo) => '<text x="' + tx + '" y="' + ty + '" font-family="Oswald,sans-serif" font-weight="600" font-size="14" fill="' + ND + '">' + num + '</text><line x1="' + (tx - 2) + '" y1="' + (ty + 6) + '" x2="' + (tx - 2 + largo) + '" y2="' + (ty + 6) + '" stroke="' + colLinea + '" stroke-width="1.2"/>';
+  return '<svg viewBox="0 0 380 470" xmlns="http://www.w3.org/2000/svg" style="max-width:340px;width:100%">' + dots +
+    '<line x1="92" y1="330" x2="312" y2="330" stroke="#F6C9B4" stroke-width="2.5"/>' +
+    '<path d="M205 330 L205 415 M205 345 L160 368 L128 378 M160 368 L150 392 M205 355 L250 372 L288 380 M250 372 L262 395 M205 380 L178 400 M205 380 L232 402" stroke="#E2E2E2" stroke-width="2.2" fill="none" stroke-linecap="round"/>' +
+    '<line x1="205" y1="330" x2="205" y2="95" stroke="#F0805B" stroke-width="3"/>' +
+    '<path d="M205 240 L248 214 L285 196 M248 214 L272 234 L302 228 M205 190 L242 165 L274 150 M242 165 L258 180 M205 215 L168 192 L136 180 M168 192 L152 208 M205 150 L178 128 M205 268 L236 258 L262 262" stroke="' + NA + '" stroke-width="2.6" fill="none" stroke-linecap="round"/>' +
+    nodo(205, 95) + nodo(285, 196) + nodo(132, 178) + nodo(172, 300) + nodo(150, 330) + nodo(185, 398) +
+    etiq(178, 66, "06", ND, 40) + etiq(316, 190, "05", ND, 44) + etiq(64, 170, "04", ND, 52) + etiq(104, 292, "03", NA, 52) + etiq(82, 320, "02", NA, 52) + etiq(118, 390, "01", ND, 52) +
   '</svg>';
 })();
 const DIMENSIONES_AUTO = [
