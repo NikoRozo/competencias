@@ -23,7 +23,7 @@
 const CONFIG = {
   API_URL: "https://script.google.com/macros/s/AKfycbzJ32Txv5-60I6Ly6pnDBVO6gBpSOptcjxYwSVPV3JDicfdqeffgaJEke8fvopytsOo/exec",
   SHEET_URL: "https://docs.google.com/spreadsheets/d/1U6XnK-KK0gZBBgxJp8iFDsoT8nUbr01xkuepLS-5l4E/edit",
-  VERSION: "3.3",
+  VERSION: "4.0",
 };
 </script>
 
@@ -366,6 +366,12 @@ function App() {
   const [adminDatos, setAdminDatos] = useState(null);
   const [importTexto, setImportTexto] = useState("");
   const [importMsg, setImportMsg] = useState(null);
+  const [autoTarget, setAutoTarget] = useState(null);   // null = yo; {id,nombre} = admin viendo a otro
+  const [autoDatos, setAutoDatos] = useState(null);
+  const [autoForm, setAutoForm] = useState(null);
+  const [proyForm, setProyForm] = useState(null);
+  const [bitaTexto, setBitaTexto] = useState({});
+  const [autoMsg, setAutoMsg] = useState(null);
   const cola = useRef([]);
   const enviando = useRef(false);
 
@@ -486,6 +492,52 @@ function App() {
     } catch (e) { setImportMsg({ ok: false, texto: "Error de conexión" }); }
   };
 
+  const DIMS5D = [["descanso","DESCANSO"],["deporte","DEPORTE"],["dieta","DIETA"],["dietaint","DIETA INTELECTUAL"],["espiritual","DIMENSIÓN ESPIRITUAL"]];
+  const CAMPOS_PROY = [["problema","Problema / oportunidad"],["objetivo_general","Objetivo general"],["objetivos_especificos","Objetivos específicos"],["dieta_intelectual","Dieta intelectual"],["habitos_diarios","Hábitos diarios"],["habitos_semanales","Hábitos semanales"]];
+  const formVacio = () => { const f = { proposito: "" }; DIMS5D.forEach(([k]) => { f[k + "_partida"] = ""; f[k + "_objetivo"] = ""; }); return f; };
+  const notaDe = (pid, cid) => {
+    const r = autoTarget ? ((adminDatos && adminDatos.estado[pid]) || { r: {} }).r : respuestas;
+    const res = calcularResultados(r)[cid];
+    return res && res.score != null ? fmt(res.score) : "—";
+  };
+  const cargarAuto = async (target) => {
+    setAutoDatos(null); setAutoForm(null); setProyForm(null); setAutoMsg(null);
+    try {
+      const req = { action: "auto_cargar", clave: sesion.clave };
+      if (target) req.persona_id = target.id;
+      const r = await api(req);
+      if (!r.ok) { setAutoMsg({ ok: false, texto: r.error }); return; }
+      setAutoDatos(r);
+      const f = formVacio();
+      if (r.auto) Object.keys(f).forEach((k) => { f[k] = r.auto[k] || ""; });
+      setAutoForm(f);
+    } catch (e) { setAutoMsg({ ok: false, texto: "Sin conexión con el servidor" }); }
+  };
+  const abrirAuto = (target) => { setAutoTarget(target || null); setVista("auto"); cargarAuto(target || null); };
+  const guardarAuto = async () => {
+    setAutoMsg(null);
+    try {
+      const r = await api({ action: "auto_guardar", clave: sesion.clave, datos: autoForm });
+      setAutoMsg(r.ok ? { ok: true, texto: "Autodesarrollo guardado" } : { ok: false, texto: r.error });
+    } catch (e) { setAutoMsg({ ok: false, texto: "Sin conexión" }); }
+  };
+  const guardarProyecto = async () => {
+    setAutoMsg(null);
+    try {
+      const req = { action: "proyecto_guardar", clave: sesion.clave, proyecto: proyForm };
+      if (autoTarget) req.persona_id = autoTarget.id;
+      const r = await api(req);
+      if (r.ok) { setProyForm(null); cargarAuto(autoTarget); } else setAutoMsg({ ok: false, texto: r.error });
+    } catch (e) { setAutoMsg({ ok: false, texto: "Sin conexión" }); }
+  };
+  const agregarBitacora = async (pid) => {
+    const texto = (bitaTexto[pid] || "").trim(); if (!texto) return;
+    try {
+      const r = await api({ action: "bitacora_agregar", clave: sesion.clave, proyecto_id: pid, texto });
+      if (r.ok) { setBitaTexto((b) => ({ ...b, [pid]: "" })); cargarAuto(autoTarget); } else setAutoMsg({ ok: false, texto: r.error });
+    } catch (e) { setAutoMsg({ ok: false, texto: "Sin conexión" }); }
+  };
+
   const Barra = () => (sync.pendientes > 0 || sync.error) ? (
     <div className="fixed bottom-3 right-3 text-[11px] uppercase tracking-widest px-3 py-2 text-white z-50" style={{ backgroundColor: sync.error ? "#E74C3C" : "#333" }}>
       {sync.error ? sync.error : "Guardando… (" + sync.pendientes + ")"}
@@ -585,6 +637,13 @@ function App() {
                       >
                         HTML
                       </button>
+                      <button
+                        onClick={() => abrirAuto({ id: p.id, nombre: p.nombre })}
+                        className="text-[10px] uppercase tracking-widest px-3 py-1.5 bg-neutral-800 text-white"
+                        style={{ fontFamily: "Oswald" }}
+                      >
+                        Auto
+                      </button>
                     </div>
                   </td>
                 </tr>
@@ -601,6 +660,100 @@ function App() {
             {importMsg && <p className="serif text-xs" style={{ color: importMsg.ok ? "#27AE60" : "#E74C3C" }}>{importMsg.texto}</p>}
           </div>
         </div>
+      </div>
+    );
+  }
+
+  // ============================ AUTODESARROLLO ============================
+  if (vista === "auto") {
+    const soloLectura = !!autoTarget;
+    const inp = "serif w-full border border-gray-300 p-2.5 text-sm outline-none focus:border-neutral-800";
+    return (
+      <div className="min-h-screen pb-16"><Barra />
+        <div className="bg-neutral-800 text-white px-5 md:px-12 py-8">
+          <button onClick={() => { setVista(autoTarget ? "admin" : "matriz"); setAutoTarget(null); }} className="text-xs uppercase tracking-widest opacity-70">← {autoTarget ? "Panel admin" : "Matriz"}</button>
+          <h1 className="uppercase text-2xl md:text-4xl font-semibold mt-4">Autodesarrollo</h1>
+          <p className="serif text-sm opacity-80 mt-2">{autoTarget ? autoTarget.nombre + " · vista de administración" : sesion.persona.nombre}</p>
+        </div>
+        {autoMsg && <p className="px-5 md:px-12 mt-4 text-xs uppercase tracking-wide" style={{ color: autoMsg.ok ? "#27AE60" : "#E74C3C" }}>{autoMsg.texto}</p>}
+        {!autoForm ? <p className="px-5 md:px-12 py-10 text-gray-400 uppercase tracking-widest text-sm">Cargando…</p> : (
+        <div className="px-5 md:px-12 py-8 max-w-4xl">
+          <h2 className="uppercase text-lg font-semibold" style={{ color: NARANJA }}>Propósito de vida</h2>
+          <p className="serif text-xs text-gray-500 mb-2">¿Para qué vine?</p>
+          <textarea disabled={soloLectura} value={autoForm.proposito} onChange={(e) => setAutoForm({ ...autoForm, proposito: e.target.value })} rows={3} className={inp} />
+
+          <h2 className="uppercase text-lg font-semibold mt-10" style={{ color: NARANJA }}>Equilibrio de vida · 5D's</h2>
+          <p className="serif text-xs text-gray-500 mb-3">Para cada dimensión define tu punto de partida y tu objetivo.</p>
+          {DIMS5D.map(([k, lbl]) => (
+            <div key={k} className="mb-5">
+              <p className="uppercase text-xs tracking-widest text-neutral-700 mb-1.5">{lbl}</p>
+              <div className="grid md:grid-cols-2 gap-3">
+                <div><p className="text-[10px] uppercase tracking-widest text-gray-400 mb-1">Punto de partida</p>
+                  <textarea disabled={soloLectura} value={autoForm[k + "_partida"]} onChange={(e) => setAutoForm({ ...autoForm, [k + "_partida"]: e.target.value })} rows={2} className={inp} /></div>
+                <div><p className="text-[10px] uppercase tracking-widest text-gray-400 mb-1">Objetivo</p>
+                  <textarea disabled={soloLectura} value={autoForm[k + "_objetivo"]} onChange={(e) => setAutoForm({ ...autoForm, [k + "_objetivo"]: e.target.value })} rows={2} className={inp} /></div>
+              </div>
+            </div>
+          ))}
+          {!soloLectura && <button onClick={guardarAuto} className="px-10 py-3.5 uppercase text-xs tracking-widest text-white" style={{ backgroundColor: NARANJA }}>Guardar autodesarrollo</button>}
+
+          <div className="flex items-center justify-between mt-12 mb-2">
+            <h2 className="uppercase text-lg font-semibold" style={{ color: NARANJA }}>Proyectos de transformación</h2>
+            {!proyForm && <button onClick={() => setProyForm({ competencia: "", marco_meses: "1", problema: "", objetivo_general: "", objetivos_especificos: "", dieta_intelectual: "", habitos_diarios: "", habitos_semanales: "" })} className="px-5 py-2.5 uppercase text-[10px] tracking-widest bg-neutral-800 text-white">+ Nuevo proyecto</button>}
+          </div>
+
+          {proyForm && (
+            <div className="border border-neutral-800 p-4 md:p-6 mb-6 bg-gray-50">
+              <p className="uppercase text-xs tracking-widest text-neutral-700 mb-3">{proyForm.id_proyecto ? "Editar proyecto" : "Nuevo proyecto"}</p>
+              <div className="grid md:grid-cols-2 gap-3 mb-3">
+                <div><p className="text-[10px] uppercase tracking-widest text-gray-400 mb-1">Competencia</p>
+                  <select value={proyForm.competencia} onChange={(e) => setProyForm({ ...proyForm, competencia: e.target.value })} className={inp}>
+                    <option value="">— Selecciona —</option>
+                    {todasLasCompetencias.map((c) => <option key={c.id} value={c.id}>{c.num}. {c.titulo} · nota {notaDe(autoTarget ? autoTarget.id : sesion.persona.id, c.id)}</option>)}
+                  </select></div>
+                <div><p className="text-[10px] uppercase tracking-widest text-gray-400 mb-1">Marco de tiempo</p>
+                  <select value={proyForm.marco_meses} onChange={(e) => setProyForm({ ...proyForm, marco_meses: e.target.value })} className={inp}>
+                    <option value="1">1 mes</option><option value="2">2 meses</option><option value="3">3 meses</option>
+                  </select></div>
+              </div>
+              {CAMPOS_PROY.map(([k, lbl]) => (
+                <div key={k} className="mb-3"><p className="text-[10px] uppercase tracking-widest text-gray-400 mb-1">{lbl}</p>
+                  <textarea value={proyForm[k]} onChange={(e) => setProyForm({ ...proyForm, [k]: e.target.value })} rows={2} className={inp} /></div>
+              ))}
+              <div className="flex gap-3">
+                <button onClick={guardarProyecto} disabled={!proyForm.competencia} className="px-8 py-3 uppercase text-xs tracking-widest text-white disabled:opacity-40" style={{ backgroundColor: NARANJA }}>Guardar proyecto</button>
+                <button onClick={() => setProyForm(null)} className="px-8 py-3 uppercase text-xs tracking-widest border border-gray-400 text-gray-600">Cancelar</button>
+              </div>
+            </div>
+          )}
+
+          {autoDatos && autoDatos.proyectos.length === 0 && !proyForm && <p className="serif text-sm text-gray-400">Aún no hay proyectos de transformación.</p>}
+          {autoDatos && autoDatos.proyectos.map((p) => {
+            const comp = todasLasCompetencias.find((c) => c.id === p.competencia);
+            return (
+              <div key={p.id_proyecto} className="border border-gray-200 p-4 md:p-6 mb-6">
+                <div className="flex items-start justify-between gap-3 flex-wrap">
+                  <div>
+                    <p className="uppercase text-sm font-semibold text-neutral-800">{comp ? comp.num + ". " + comp.titulo : p.competencia} <span className="text-[10px] px-2 py-0.5 text-white ml-1" style={{ backgroundColor: NARANJA }}>nota {notaDe(autoDatos.persona_id, p.competencia)}</span></p>
+                    <p className="text-[10px] uppercase tracking-widest text-gray-400 mt-1">Marco: {p.marco_meses} {p.marco_meses === "1" ? "mes" : "meses"} · creado {new Date(p.creado).toLocaleDateString("es-CO")}</p>
+                  </div>
+                  <button onClick={() => setProyForm({ id_proyecto: p.id_proyecto, competencia: p.competencia, marco_meses: String(p.marco_meses), problema: p.problema, objetivo_general: p.objetivo_general, objetivos_especificos: p.objetivos_especificos, dieta_intelectual: p.dieta_intelectual, habitos_diarios: p.habitos_diarios, habitos_semanales: p.habitos_semanales })} className="text-[10px] uppercase tracking-widest px-3 py-1.5 border border-gray-400 text-gray-600">Editar</button>
+                </div>
+                {CAMPOS_PROY.map(([k, lbl]) => p[k] ? <div key={k} className="mt-3"><p className="text-[10px] uppercase tracking-widest text-gray-400">{lbl}</p><p className="serif text-sm text-neutral-800 whitespace-pre-wrap">{p[k]}</p></div> : null)}
+                <div className="mt-4 pt-3 border-t border-gray-100">
+                  <p className="uppercase text-[11px] tracking-widest text-neutral-700 mb-2">Bitácora</p>
+                  {(autoDatos.bitacora[p.id_proyecto] || []).map((b, i) => (
+                    <p key={i} className="serif text-sm mb-1.5"><span className="text-[10px] uppercase tracking-wide text-gray-400">{new Date(b.fecha).toLocaleDateString("es-CO")} · {b.autor_nombre}:</span> {b.texto}</p>
+                  ))}
+                  <div className="flex gap-2 mt-2">
+                    <input value={bitaTexto[p.id_proyecto] || ""} onChange={(e) => setBitaTexto({ ...bitaTexto, [p.id_proyecto]: e.target.value })} onKeyDown={(e) => { if (e.key === "Enter") agregarBitacora(p.id_proyecto); }} placeholder="Nueva entrada de bitácora…" className={inp + " flex-1"} />
+                    <button onClick={() => agregarBitacora(p.id_proyecto)} className="px-5 uppercase text-[10px] tracking-widest bg-neutral-800 text-white">Agregar</button>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>)}
       </div>
     );
   }
@@ -719,6 +872,8 @@ function App() {
       ))}
       <div className="bg-gray-100 px-4 md:px-12 py-5 mt-6 flex flex-col md:flex-row gap-3">
         <button onClick={() => pendiente && abrir(pendiente, true)} disabled={!pendiente} className="flex-1 bg-neutral-800 text-white uppercase tracking-widest text-sm py-4 disabled:opacity-60">{pendiente ? "Continuar donde lo dejaste" : "Cuestionario completado"}</button>
+        <button onClick={() => abrirAuto(null)} className="md:w-64 text-white uppercase tracking-widest text-sm py-4" style={{ backgroundColor: NARANJA }}>Autodesarrollo</button>
+        {contestadasGlobal === totalPreguntas && <button onClick={() => descargar("mi-informe-competencias.html", construirInformeHTML(sesion.persona.nombre, respuestas), "text/html;charset=utf-8")} className="md:w-64 bg-neutral-700 text-white uppercase tracking-widest text-sm py-4">Descargar mi informe</button>}
         {esAdmin && <button onClick={() => { setVista("admin"); cargarAdmin(); }} className="md:w-64 bg-neutral-900 text-white uppercase tracking-widest text-sm py-4 border border-neutral-700">Panel admin</button>}
         <button onClick={cerrarSesion} className="md:w-52 bg-neutral-400 text-white uppercase tracking-widest text-sm py-4">Cerrar sesión</button>
       </div>
