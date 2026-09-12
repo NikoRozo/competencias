@@ -23,7 +23,7 @@
 const CONFIG = {
   API_URL: "https://script.google.com/macros/s/AKfycbzJ32Txv5-60I6Ly6pnDBVO6gBpSOptcjxYwSVPV3JDicfdqeffgaJEke8fvopytsOo/exec",
   SHEET_URL: "https://docs.google.com/spreadsheets/d/1U6XnK-KK0gZBBgxJp8iFDsoT8nUbr01xkuepLS-5l4E/edit",
-  VERSION: "4.1",
+  VERSION: "4.2",
 };
 </script>
 
@@ -671,13 +671,15 @@ function App() {
     return (
       <div className="min-h-screen pb-16"><Barra />
         <div className="bg-neutral-800 text-white px-5 md:px-12 py-8">
+          <div className="max-w-4xl mx-auto">
           <button onClick={() => { setVista(autoTarget ? "admin" : "matriz"); setAutoTarget(null); }} className="text-xs uppercase tracking-widest opacity-70">← {autoTarget ? "Panel admin" : "Matriz"}</button>
           <h1 className="uppercase text-2xl md:text-4xl font-semibold mt-4">Autodesarrollo</h1>
           <p className="serif text-sm opacity-80 mt-2">{autoTarget ? autoTarget.nombre + " · vista de administración" : sesion.persona.nombre}</p>
+          </div>
         </div>
-        {autoMsg && <p className="px-5 md:px-12 mt-4 text-xs uppercase tracking-wide" style={{ color: autoMsg.ok ? "#27AE60" : "#E74C3C" }}>{autoMsg.texto}</p>}
-        {!autoForm ? <p className="px-5 md:px-12 py-10 text-gray-400 uppercase tracking-widest text-sm">Cargando…</p> : (
-        <div className="px-5 md:px-12 py-8 max-w-4xl">
+        {autoMsg && <p className="max-w-4xl mx-auto px-5 md:px-12 mt-4 text-xs uppercase tracking-wide" style={{ color: autoMsg.ok ? "#27AE60" : "#E74C3C" }}>{autoMsg.texto}</p>}
+        {!autoForm ? <p className="max-w-4xl mx-auto px-5 md:px-12 py-10 text-gray-400 uppercase tracking-widest text-sm">Cargando…</p> : (
+        <div className="px-5 md:px-12 py-8 max-w-4xl mx-auto">
           <h2 className="uppercase text-lg font-semibold" style={{ color: NARANJA }}>Propósito de vida</h2>
           <p className="serif text-xs text-gray-500 mb-2">¿Para qué vine?</p>
           <textarea disabled={soloLectura} value={autoForm.proposito} onChange={(e) => setAutoForm({ ...autoForm, proposito: e.target.value })} rows={3} className={inp} />
